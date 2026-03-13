@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* FONDO GENERAL DEL SISTEMA */
+
+body{
+
+background-image: url('/img/fondo.jpg');
+
+background-size: cover;
+
+background-position: center;
+
+background-repeat: no-repeat;
+
+background-attachment: fixed;
+
+}
+
+/* CAPA DE OPACIDAD */
+
+body::after{
+
+content:"";
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:rgba(255,255,255,0.5);
+
+pointer-events:none;
+
+z-index:-1;
+
+}
+/* LOGIN CONSULTORIO */
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.logo {
+    width: 210px;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    padding: 0px;
+    background: white;
+    transition: transform .3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.login-title {
+    font-weight: bold;
+}
+
+/* SIDEBAR CONSULTORIO */
+
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: rgba(52, 73, 94, 0.85);
+    /* azul médico elegante */
+    backdrop-filter: blur(6px);
+    color: white;
+    border-right: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* contenedor del logo */
+
+.sidebar-logo-container {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* logo */
+
+.sidebar-logo {
+    width: 80px;
+    border-radius: 12px;
+    display: block;
+    margin: 0 auto;
+    /* esto lo centra */
+}
+
+/* nombre usuario */
+
+.user-name {
+    font-size: 14px;
+    opacity: .8;
+}
+
+/* links */
+
+.sidebar .nav-link {
+    color: white;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* botón cerrar sesión */
+
+.btn-danger-soft {
+    background: #ff6b6b;
+    border: none;
+    color: white;
+}
+
+.btn-danger-soft:hover {
+    background: #ff5252;
+}
+
+.navbar-glass{
+background: rgba(255,255,255,0.7);
+backdrop-filter: blur(6px);
+
+}
+
+/* CONTENIDO PRINCIPAL */
+
+.main-content{
+background: rgba(255,255,255,0.85);
+backdrop-filter: blur(4px);
+border-radius:10px;
+min-height:90vh;
+}
