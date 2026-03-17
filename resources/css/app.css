@@ -4,41 +4,32 @@
 
 /* FONDO GENERAL DEL SISTEMA */
 
-body{
+body {
 
-background-image: url('/img/fondo.jpg');
-
-background-size: cover;
-
-background-position: center;
-
-background-repeat: no-repeat;
-
-background-attachment: fixed;
+    background-image: url('/img/fondo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 
 }
 
 /* CAPA DE OPACIDAD */
 
-body::after{
+body::after {
 
-content:"";
-
-position:fixed;
-
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-background:rgba(255,255,255,0.5);
-
-pointer-events:none;
-
-z-index:-1;
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+    z-index: -1;
 
 }
+
 /* LOGIN CONSULTORIO */
 
 .login-page {
@@ -140,17 +131,21 @@ z-index:-1;
     background: #ff5252;
 }
 
-.navbar-glass{
-background: rgba(255,255,255,0.7);
-backdrop-filter: blur(6px);
+.navbar-glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(6px);
 
 }
 
 /* CONTENIDO PRINCIPAL */
 
-.main-content{
-background: rgba(255,255,255,0.85);
-backdrop-filter: blur(4px);
-border-radius:10px;
-min-height:90vh;
+.main-content {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(4px);
+    border-radius: 10px;
+    min-height: 90vh;
+}
+
+#horas-container button {
+    min-width: 70px;
 }

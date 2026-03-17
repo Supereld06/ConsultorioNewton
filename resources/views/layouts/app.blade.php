@@ -53,43 +53,31 @@
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/dashboard') }}">
-                        🏠 Dashboard
+                        🏠 Panel de Control
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{{ route('patients.index') }}">
                         👨 Pacientes
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{{ route('doctors.index') }}">
                         👨‍⚕️ Doctores
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{{ route('appointments.index') }}">
                         📅 Citas Médicas
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{{ route('consultations.index') }}">
                         🩺 Consultas
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        📋 Historial Clínico
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        💊 Recetas
                     </a>
                 </li>
 
@@ -101,7 +89,23 @@
 
                 <li class="nav-item">
                     <a class="nav-link" href="#">
-                        📄 Recibos
+                        💲 Pago Consulta Medica 
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        💲 Pago Laboratorio
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        💲 Pago Imagenologia
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        💲 Pago Otros
                     </a>
                 </li>
 
@@ -128,27 +132,9 @@
 
         <div class="flex-grow-1">
 
-            <!-- NAVBAR SUPERIOR -->
-
-            <nav class="navbar shadow-sm navbar-glass">
-
-                <div class="container-fluid">
-
-                    <span class="navbar-brand mb-0 h5">
-
-                        {{ $header ?? 'Panel de control' }}
-
-                    </span>
-
-                </div>
-
-            </nav>
-
-            <!-- CONTENIDO PRINCIPAL -->
-
             <main class="p-4 main-content">
 
-                {{ $slot }}
+                @yield('content')
 
             </main>
 
