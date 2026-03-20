@@ -35,9 +35,9 @@
             <!-- LOGO -->
             <div class="text-center mb-3">
 
-                <img src="{{ asset('img/logo.jpeg') }}" class="sidebar-logo">
-
-                <h5 class="mt-2">Consultorio Newton</h5>
+                <img src="{{ asset('img/logo.png') }}" class="sidebar-logo">
+                <br>
+                <h5 class="mt-2">Usuario:</h5>
 
                 <p class="user-name">
                     {{ Auth::user()->name }}
@@ -89,7 +89,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link" href="#">
-                        💲 Pago Consulta Medica 
+                        💲 Pago Consulta Medica
                     </a>
                 </li>
                 <li class="nav-item">
