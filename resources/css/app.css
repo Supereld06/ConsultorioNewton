@@ -52,13 +52,10 @@ body::after {
 }
 
 .logo {
-    width: 210px;
-    height: auto;
+    width: 220px;
+    border-radius: 12px;
     display: block;
-    border-radius: 10px;
-    padding: 0px;
-    background: white;
-    transition: transform .3s ease;
+    margin: 0 auto;
 }
 
 .logo:hover {
@@ -92,11 +89,13 @@ body::after {
 /* logo */
 
 .sidebar-logo {
-    width: 80px;
-    border-radius: 12px;
+    width: 150px;
     display: block;
     margin: 0 auto;
-    /* esto lo centra */
+
+    filter: drop-shadow(0 0 4px white)
+            drop-shadow(0 0 8px white)
+            drop-shadow(0 0 12px white);
 }
 
 /* nombre usuario */

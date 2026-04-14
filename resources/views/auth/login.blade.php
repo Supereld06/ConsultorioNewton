@@ -27,7 +27,7 @@
             <div class="text-center mb-3">
 
                 <div class="sidebar-logo-container">
-                    <img src="{{ asset('img/logo.jpeg') }}" class="sidebar-logo">
+                    <img src="{{ asset('img/logo.png') }}" class="logo">
                 </div>
 
                 <p class="text-muted">
