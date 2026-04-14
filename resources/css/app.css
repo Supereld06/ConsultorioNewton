@@ -2,35 +2,80 @@
 @tailwind components;
 @tailwind utilities;
 
-/* FONDO GENERAL DEL SISTEMA */
+/* =========================
+   FONDO GENERAL DEL SISTEMA
+========================= */
 
-body {
-
-    background-image: url('/img/fondo.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-/* CAPA DE OPACIDAD */
+/* Fondo principal */
+body {
+    background: url('/img/fondo.jpg') no-repeat center center fixed !important;
+    background-size: cover !important;
+}
 
+/* EVITAR QUE BOOTSTRAP TAPE EL FONDO */
+.container,
+.container-fluid,
+.main-content {
+    background: transparent !important;
+}
+
+.todo-mayusculas {
+    text-transform: uppercase;
+}
+
+.todo-minusculas {
+    text-transform: lowercase;
+}
+
+
+/* Overlay (capa transparente encima del fondo) */
 body::after {
-
     content: "";
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.5);
-    pointer-events: none;
-    z-index: -1;
 
+    
+
+    pointer-events: none;
+    z-index: 0;
 }
 
-/* LOGIN CONSULTORIO */
+/* =========================
+   FIX BOOTSTRAP / TAILWIND
+========================= */
+
+html, body {
+    background-color: transparent !important;
+}
+
+/* Evita que Bootstrap tape el fondo */
+.container,
+.container-fluid {
+    background-color: transparent !important;
+}
+
+/* Elementos con efecto glass */
+.main-content,
+.card,
+.navbar,
+.table {
+    background: rgba(255, 255, 255, 0.066) !important;
+    
+    border-radius: 10px;
+}
+
+/* =========================
+   LOGIN CONSULTORIO
+========================= */
 
 .login-page {
     min-height: 100vh;
@@ -56,6 +101,7 @@ body::after {
     border-radius: 12px;
     display: block;
     margin: 0 auto;
+    transition: transform 0.3s ease;
 }
 
 .logo:hover {
@@ -66,27 +112,25 @@ body::after {
     font-weight: bold;
 }
 
-/* SIDEBAR CONSULTORIO */
+/* =========================
+   SIDEBAR CONSULTORIO
+========================= */
 
 .sidebar {
     width: 260px;
     min-height: 100vh;
     background: rgba(52, 73, 94, 0.85);
-    /* azul médico elegante */
     backdrop-filter: blur(6px);
     color: white;
     border-right: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-/* contenedor del logo */
-
+/* logo sidebar */
 .sidebar-logo-container {
     width: 100%;
     text-align: center;
     margin-bottom: 10px;
 }
-
-/* logo */
 
 .sidebar-logo {
     width: 150px;
@@ -98,20 +142,19 @@ body::after {
             drop-shadow(0 0 12px white);
 }
 
-/* nombre usuario */
-
+/* usuario */
 .user-name {
     font-size: 14px;
     opacity: .8;
 }
 
 /* links */
-
 .sidebar .nav-link {
     color: white;
     font-size: 15px;
     padding: 10px;
     border-radius: 6px;
+    transition: 0.3s;
 }
 
 .sidebar .nav-link:hover {
@@ -119,7 +162,6 @@ body::after {
 }
 
 /* botón cerrar sesión */
-
 .btn-danger-soft {
     background: #ff6b6b;
     border: none;
@@ -130,21 +172,21 @@ body::after {
     background: #ff5252;
 }
 
+/* navbar glass */
 .navbar-glass {
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(6px);
-
 }
 
-/* CONTENIDO PRINCIPAL */
+/* =========================
+   CONTENIDO PRINCIPAL
+========================= */
 
 .main-content {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(4px);
-    border-radius: 10px;
     min-height: 90vh;
 }
 
+/* botones de horas */
 #horas-container button {
     min-width: 70px;
 }

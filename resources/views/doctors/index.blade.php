@@ -92,7 +92,7 @@
 
                                 <!-- EDITAR -->
                                 <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-warning btn-sm">
-                                    Editar
+                                    EDITAR
                                 </a>
 
                                 <!-- ELIMINAR -->
@@ -104,14 +104,18 @@
 
                                     <button class="btn btn-danger btn-sm"
                                         onclick="return confirm('¿Estás seguro de eliminar este doctor?')">
-                                        Eliminar
+                                        ELIMINAR
                                     </button>
 
                                 </form>
 
                                 <!-- CONSULTAS -->
                                 <a href="#" class="btn btn-primary btn-sm">
-                                    Consultas
+                                    CONSULTAS
+                                </a>
+
+                                <a href="#" class="btn btn-success btn-sm">
+                                    PAGO DOCTOR
                                 </a>
 
                             </td>

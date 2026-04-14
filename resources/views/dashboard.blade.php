@@ -128,20 +128,20 @@
 
                                     {{-- ATENDER --}}
                                     <a href="{{ route('consultations.atender', $a->id) }}" class="btn btn-sm btn-primary">
-                                        Atender
+                                        ATENDER
                                     </a>
 
                                     {{-- PDF --}}
                                     @if($a->consultation && $a->consultation->atendido)
                                         <a href="{{ route('consultations.pdf', $a->consultation->id) }}"
                                             class="btn btn-sm btn-secondary">
-                                            PDF
+                                            IMRPIMIR RECETA
                                         </a>
                                     @endif
 
                                     {{-- PAGO (FUTURO) --}}
                                     <button class="btn btn-sm btn-success">
-                                        Pago
+                                        PAGO
                                     </button>
 
                                 </td>

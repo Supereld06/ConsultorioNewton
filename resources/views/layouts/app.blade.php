@@ -24,7 +24,7 @@
 
 </head>
 
-<body class="font-sans antialiased app-background">
+<body class="">
 
     <div class="d-flex">
 
