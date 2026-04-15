@@ -9,6 +9,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\MedicalPaymentController;
+use App\Http\Controllers\UserController;
 
 
 Route::get('/', function () {
@@ -24,6 +25,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::resource('users', UserController::class);
 
 // Rutas para pacientes
 Route::resource('patients', PatientController::class);
@@ -58,4 +61,22 @@ Route::post('/medical-payments', [MedicalPaymentController::class, 'store'])->na
 Route::get('/consultations/{id}/receipt', [ConsultationController::class, 'receipt'])
     ->name('consultations.receipt');
 
-require __DIR__.'/auth.php';
+Route::get('/doctors/{id}/payments', [DoctorController::class, 'payments'])
+    ->name('doctors.payments');
+
+// 🔥 PAGAR DOCTOR
+Route::get('/doctors/{id}/pay', [DoctorController::class, 'payDoctor'])
+    ->name('doctors.pay');
+
+// 🔥 LISTADO DE RECIBOS
+Route::get('/medical-receipts', [DoctorController::class, 'receiptsIndex'])
+    ->name('medical_receipts.index');
+
+// 🔥 DETALLE DEL RECIBO
+Route::get('/medical-receipts/{number}', [DoctorController::class, 'receiptDetail'])
+    ->name('medical_receipts.show');
+
+Route::get('/medical-receipts/{number}/pdf', [DoctorController::class, 'receiptPdf'])
+    ->name('medical_receipts.pdf');
+
+require __DIR__ . '/auth.php';

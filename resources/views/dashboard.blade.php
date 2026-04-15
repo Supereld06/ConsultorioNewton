@@ -139,11 +139,6 @@
                                         </a>
                                     @endif
 
-                                    {{-- PAGO (FUTURO) --}}
-                                    <button class="btn btn-sm btn-success">
-                                        PAGO
-                                    </button>
-
                                 </td>
 
                             </tr>

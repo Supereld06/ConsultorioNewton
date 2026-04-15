@@ -82,10 +82,18 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        📊 Reportes
+                    <a class="nav-link" href="{{ route('medical_receipts.index') }}">
+                        📊 Reportes Pago Doctores
                     </a>
                 </li>
+
+                @if(Auth::user()->id == 1) <!-- Solo el usuario admin puede ver la sección de usuarios -->
+                <li class="nav-item">
+                    <a href="{{ route('users.index') }}" class="nav-link">
+                        👤 Usuarios
+                    </a>
+                </li>
+                @endif
 
             </ul>
 

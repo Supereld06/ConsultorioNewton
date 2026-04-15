@@ -55,80 +55,81 @@
 
                     @forelse($doctors as $doctor)
 
-                        <tr>
+                    <tr>
 
-                            <td>{{ $doctor->id }}</td>
+                        <td>{{ $doctor->id }}</td>
 
-                            <!-- FOTO -->
-                            <td>
-                                @if($doctor->foto)
-                                    <img src="{{ asset('storage/'.$doctor->foto) }}"
-                                        class="rounded-circle shadow"
-                                        width="60" height="60"
-                                        style="object-fit: cover;">
-                                @else
-                                    <img src="https://via.placeholder.com/60"
-                                        class="rounded-circle"
-                                        width="60" height="60">
-                                @endif
-                            </td>
+                        <!-- FOTO -->
+                        <td>
+                            @if($doctor->foto)
+                            <img src="{{ asset('storage/'.$doctor->foto) }}"
+                                class="rounded-circle shadow"
+                                width="60" height="60"
+                                style="object-fit: cover;">
+                            @else
+                            <img src="https://via.placeholder.com/60"
+                                class="rounded-circle"
+                                width="60" height="60">
+                            @endif
+                        </td>
 
-                            <!-- NOMBRE -->
-                            <td>
-                                <strong>{{ $doctor->nombres }} {{ $doctor->apellidos }}</strong>
-                            </td>
+                        <!-- NOMBRE -->
+                        <td>
+                            <strong>{{ $doctor->nombres }} {{ $doctor->apellidos }}</strong>
+                        </td>
 
-                            <td>{{ $doctor->ci }}</td>
+                        <td>{{ $doctor->ci }}</td>
 
-                            <td>
-                                <span class="badge bg-info">
-                                    {{ $doctor->especialidad }}
-                                </span>
-                            </td>
+                        <td>
+                            <span class="badge bg-info">
+                                {{ $doctor->especialidad }}
+                            </span>
+                        </td>
 
-                            <td>{{ $doctor->telefono }}</td>
+                        <td>{{ $doctor->telefono }}</td>
 
-                            <td>
+                        <td>
 
-                                <!-- EDITAR -->
-                                <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-warning btn-sm">
-                                    EDITAR
-                                </a>
+                            <!-- EDITAR -->
+                            <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-warning btn-sm">
+                                EDITAR
+                            </a>
 
-                                <!-- ELIMINAR -->
-                                <form action="{{ route('doctors.destroy', $doctor->id) }}" method="POST"
-                                    style="display:inline">
+                            <!-- ELIMINAR -->
+                            <form action="{{ route('doctors.destroy', $doctor->id) }}" method="POST"
+                                style="display:inline">
 
-                                    @csrf
-                                    @method('DELETE')
+                                @csrf
+                                @method('DELETE')
 
-                                    <button class="btn btn-danger btn-sm"
-                                        onclick="return confirm('¿Estás seguro de eliminar este doctor?')">
-                                        ELIMINAR
-                                    </button>
+                                <button class="btn btn-danger btn-sm"
+                                    onclick="return confirm('¿Estás seguro de eliminar este doctor?')">
+                                    ELIMINAR
+                                </button>
 
-                                </form>
+                            </form>
 
-                                <!-- CONSULTAS -->
-                                <a href="#" class="btn btn-primary btn-sm">
-                                    CONSULTAS
-                                </a>
+                            <!-- CONSULTAS -->
+                            <a href="#" class="btn btn-primary btn-sm">
+                                CONSULTAS
+                            </a>
 
-                                <a href="#" class="btn btn-success btn-sm">
-                                    PAGO DOCTOR
-                                </a>
+                            <a href="{{ route('doctors.payments', $doctor->id) }}"
+                                class="btn btn-success btn-sm">
+                                💰 PAGO DOCTOR
+                            </a>
 
-                            </td>
+                        </td>
 
-                        </tr>
+                    </tr>
 
                     @empty
 
-                        <tr>
-                            <td colspan="7" class="text-center">
-                                No hay doctores registrados
-                            </td>
-                        </tr>
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            No hay doctores registrados
+                        </td>
+                    </tr>
 
                     @endforelse
 
