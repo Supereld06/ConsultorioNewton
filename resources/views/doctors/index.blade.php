@@ -67,9 +67,12 @@
                                 width="60" height="60"
                                 style="object-fit: cover;">
                             @else
-                            <img src="https://via.placeholder.com/60"
-                                class="rounded-circle"
-                                width="60" height="60">
+                                            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3"
+                                                style="width:45px;height:45px;font-weight:bold;">
+
+                                                {{ strtoupper(substr($doctor->nombres, 0, 1)) }}
+
+                                            </div>
                             @endif
                         </td>
 
@@ -108,11 +111,6 @@
                                 </button>
 
                             </form>
-
-                            <!-- CONSULTAS -->
-                            <a href="#" class="btn btn-primary btn-sm">
-                                CONSULTAS
-                            </a>
 
                             <a href="{{ route('doctors.payments', $doctor->id) }}"
                                 class="btn btn-success btn-sm">

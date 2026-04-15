@@ -12,18 +12,26 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class DoctorController extends Controller
 {
 
-    public function index(Request $request)
-    {
-        $search = $request->search;
+public function index(Request $request)
+{
+    $search = $request->search;
 
-        $doctors = Doctor::withCount([
-            'medicalPayments as pending_payments' => function ($query) {
-                $query->where('paid', 0);
-            }
-        ])->paginate(10);
+    $doctors = Doctor::withCount([
+        'medicalPayments as pending_payments' => function ($query) {
+            $query->where('paid', 0); // 🔥 pagos pendientes
+        }
+    ])
+    ->when($search, function ($query) use ($search) {
+        $query->where(function ($q) use ($search) {
+            $q->where('nombres', 'like', "%$search%")
+              ->orWhere('apellidos', 'like', "%$search%")
+              ->orWhere('ci', 'like', "%$search%");
+        });
+    })
+    ->paginate(10);
 
-        return view('doctors.index', compact('doctors', 'search'));
-    }
+    return view('doctors.index', compact('doctors', 'search'));
+}
 
     public function create()
     {
@@ -195,14 +203,15 @@ class DoctorController extends Controller
     }
 
 
-    public function receiptPdf($number)
-    {
-        $details = MedicalReceipt::with(['patient', 'doctor'])
-            ->where('receipt_number', $number)
-            ->get();
 
-        $pdf = Pdf::loadView('reports.medical_receipt_pdf', compact('details'));
+public function receiptPdf($number)
+{
+    $details = MedicalReceipt::with(['patient', 'doctor'])
+        ->where('receipt_number', $number)
+        ->get();
 
-        return $pdf->stream('recibo.pdf'); // 🔥 abre en nueva pestaña
-    }
+    $pdf = Pdf::loadView('reports.medical_receipt_pdf', compact('details'));
+
+    return $pdf->stream('recibo.pdf'); // 🔥 abre en nueva pestaña
+}
 }
