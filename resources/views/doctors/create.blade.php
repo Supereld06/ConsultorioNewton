@@ -14,22 +14,22 @@
 
                 <div class="col-md-6 mb-3">
                     <label>Apellidos</label>
-                    <input type="text" name="apellidos" class="form-control">
+                    <input type="text" name="apellidos" class="form-control" oninput="this.value = this.value.toUpperCase();">
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label>Nombres</label>
-                    <input type="text" name="nombres" class="form-control">
+                    <input type="text" name="nombres" class="form-control" oninput="this.value = this.value.toUpperCase();">
                 </div>
 
                 <div class="col-md-4 mb-3">
                     <label>CI</label>
-                    <input type="text" name="ci" class="form-control">
+                    <input type="text" name="ci" class="form-control" oninput="this.value = this.value.toUpperCase();">
                 </div>
 
                 <div class="col-md-4 mb-3">
                     <label>Especialidad</label>
-                    <input type="text" name="especialidad" class="form-control">
+                    <input type="text" name="especialidad" class="form-control" oninput="this.value = this.value.toUpperCase();">
                 </div>
 
                 <div class="col-md-4 mb-3">

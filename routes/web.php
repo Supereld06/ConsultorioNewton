@@ -7,6 +7,8 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ConsultationController;
+use App\Http\Controllers\SupplyController;
+use App\Http\Controllers\MedicalPaymentController;
 
 
 Route::get('/', function () {
@@ -46,5 +48,14 @@ Route::get('/consultations/pdf/{id}', [ConsultationController::class, 'pdf'])->n
 Route::get('/consultations/{id}', function ($id) {
     return \App\Models\Consultation::findOrFail($id);
 });
+
+Route::get('/supplies/{id}', [SupplyController::class, 'index'])->name('supplies.index');
+Route::post('/supplies', [SupplyController::class, 'store'])->name('supplies.store');
+
+Route::get('/medical-payments/{id}', [MedicalPaymentController::class, 'index'])->name('medical_payments.index');
+Route::post('/medical-payments', [MedicalPaymentController::class, 'store'])->name('medical_payments.store');
+
+Route::get('/consultations/{id}/receipt', [ConsultationController::class, 'receipt'])
+    ->name('consultations.receipt');
 
 require __DIR__.'/auth.php';

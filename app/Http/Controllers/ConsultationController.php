@@ -50,9 +50,12 @@ class ConsultationController extends Controller
         ]);
 
         $consultation->update([
+            'motivo_consulta' => $request->motivo_consulta,
+            'cuadro_clinico' => $request->cuadro_clinico,
             'diagnostico' => $request->diagnostico,
-            'tratamiento' => $request->tratamiento,
+            'estudios' => $request->estudios,
             'receta' => $request->receta,
+            'tratamiento' => $request->tratamiento,
             'observaciones' => $request->observaciones,
             'atendido' => true
         ]);
@@ -67,8 +70,41 @@ class ConsultationController extends Controller
         $consultation = Consultation::with('appointment.patient', 'appointment.doctor')
             ->findOrFail($id);
 
-        $pdf = Pdf::loadView('consultations.pdf', compact('consultation'));
+        $pdf = Pdf::loadView('consultations.pdf', compact('consultation'))
+            ->setPaper([0, 0, 340, 520]); // 📄 Media carta
 
-        return $pdf->download('consulta.pdf');
+        return $pdf->stream('consulta.pdf'); // 👈 abre en pestaña
+    }
+
+    // ✅ NUEVO MÉTODO PARA RECIBO
+    public function receipt($id)
+    {
+        $consultation = Consultation::with([
+            'appointment.patient',
+            'appointment.doctor',
+            'supplies',
+            'medicalPayments'
+        ])->findOrFail($id);
+
+        // 🔥 AQUÍ VA
+        if (!$consultation->receipt_number) {
+            $consultation->receipt_number = 'REC-' . str_pad($consultation->id, 6, '0', STR_PAD_LEFT);
+            $consultation->save();
+        }
+
+        // 🔥 TOTALES
+        $totalSupplies = $consultation->supplies->sum('cost');
+        $totalMedical = $consultation->medicalPayments->sum('cost');
+
+        $issueDate = now()->format('d/m/Y H:i');
+
+        $pdf = Pdf::loadView('consultations.receipt', compact(
+            'consultation',
+            'totalSupplies',
+            'totalMedical',
+            'issueDate'
+        ))->setPaper([0, 0, 340, 482]);
+
+        return $pdf->stream('recibo.pdf');
     }
 }

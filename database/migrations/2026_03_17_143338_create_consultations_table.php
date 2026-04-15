@@ -19,10 +19,14 @@ return new class extends Migration {
             $table->boolean('atendido')->default(false);
 
             // 🩺 DATOS MÉDICOS
+            $table->text('motivo_consulta')->nullable();
+            $table->text('cuadro_clinico')->nullable();
             $table->text('diagnostico')->nullable();
-            $table->text('tratamiento')->nullable();
+            $table->text('estudios')->nullable();
             $table->text('receta')->nullable();
+            $table->text('tratamiento')->nullable();
             $table->text('observaciones')->nullable();
+            $table->string('receipt_number')->nullable();
             $table->timestamps();
         });
     }

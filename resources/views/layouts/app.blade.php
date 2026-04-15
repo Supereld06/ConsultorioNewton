@@ -87,28 +87,6 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        💲 Pago Consulta Medica
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        💲 Pago Laboratorio
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        💲 Pago Imagenologia
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        💲 Pago Otros
-                    </a>
-                </li>
-
             </ul>
 
             <!-- CERRAR SESIÓN -->

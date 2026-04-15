@@ -4,7 +4,7 @@
 
     <div class="container">
 
-        <h3 class="mb-4">📅 Nueva Cita Inteligente</h3>
+        <h3 class="mb-4">📅 Nueva Cita</h3>
 
         <form action="{{ route('appointments.store') }}" method="POST">
 
@@ -14,7 +14,7 @@
 
                 <!-- PACIENTE -->
                 <div class="col-md-6 mb-3">
-                    <label>Paciente</label>
+                    <label>PACIENTE</label>
                     <select name="patient_id" class="form-control" required>
                         <option value="">Seleccione</option>
                         @foreach($patients as $p)
@@ -27,7 +27,7 @@
 
                 <!-- DOCTOR -->
                 <div class="col-md-6 mb-3">
-                    <label>Doctor</label>
+                    <label>DOCTOR</label>
                     <select name="doctor_id" id="doctor" class="form-control" required>
                         <option value="">Seleccione</option>
                         @foreach($doctors as $d)
@@ -40,13 +40,13 @@
 
                 <!-- FECHA -->
                 <div class="col-md-6 mb-3">
-                    <label>Fecha</label>
+                    <label>FECHA</label>
                     <input type="date" id="fecha" name="fecha" class="form-control" required>
                 </div>
 
                 <!-- HORAS -->
                 <div class="col-md-12 mb-3">
-                    <label>Seleccionar Hora</label>
+                    <label>SELECCIONAR HORA</label>
 
                     <div id="horas-container" class="d-flex flex-wrap gap-2">
                         <span class="text-muted">Seleccione doctor y fecha</span>
@@ -58,7 +58,7 @@
                 <!-- OBS -->
                 <div class="col-md-12 mb-3">
                     <label>Observaciones</label>
-                    <textarea name="observaciones" class="form-control"></textarea>
+                    <textarea name="observaciones" class="form-control" oninput="this.value = this.value.toUpperCase();"></textarea>
                 </div>
 
             </div>

@@ -25,13 +25,7 @@ body {
     background: transparent !important;
 }
 
-.todo-mayusculas {
-    text-transform: uppercase;
-}
 
-.todo-minusculas {
-    text-transform: lowercase;
-}
 
 
 /* Overlay (capa transparente encima del fondo) */

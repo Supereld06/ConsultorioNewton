@@ -70,18 +70,34 @@
 
                                     <!-- ATENDER -->
                                     <a href="{{ route('consultations.atender', $a->id) }}" class="btn btn-success btn-sm">
-                                        🩺 Atender
+                                        🩺 ATENDER
                                     </a>
 
-                                    <!-- PAGO -->
-                                    <button class="btn btn-primary btn-sm">
-                                        💳 Pago
-                                    </button>
+                                    @if($consulta && $consulta->atendido)
+                                        <a href="{{ route('medical_payments.index', $consulta->id) }}" class="btn btn-dark btn-sm">
+                                            💰 PAGO MEDICO
+                                        </a>
+                                    @endif
 
                                     <!-- PDF -->
+
                                     @if($consulta && $consulta->atendido)
-                                        <a href="{{ route('consultations.pdf', $consulta->id) }}" class="btn btn-secondary btn-sm">
-                                            📄 PDF
+                                        <a href="{{ route('supplies.index', $consulta->id) }}" class="btn btn-warning btn-sm">
+                                            🧪 INSUMOS
+                                        </a>
+                                    @endif
+
+                                    @if($consulta && $consulta->atendido)
+                                        <a href="{{ route('consultations.pdf', $consulta->id) }}" class="btn btn-info btn-sm"
+                                            target="_blank">
+                                            📄 IMPRIMIR RECETA
+                                        </a>
+                                    @endif
+
+                                    @if($consulta && $consulta->atendido)
+                                        <a href="{{ route('consultations.receipt', $consulta->id) }}" class="btn btn-dark btn-sm"
+                                            target="_blank">
+                                            🧾 IMPRIMIR RECIBO
                                         </a>
                                     @endif
 
