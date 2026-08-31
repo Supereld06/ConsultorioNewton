@@ -10,6 +10,10 @@ use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\MedicalPaymentController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\InsumoController;
+use App\Http\Controllers\IngresoInsumoController;
+use App\Http\Controllers\SalidaInsumoController;
+use App\Http\Controllers\InventarioController;
 
 
 Route::get('/', function () {
@@ -19,13 +23,11 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth'])
     ->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 Route::resource('users', UserController::class);
 
 // Rutas para pacientes
@@ -64,19 +66,77 @@ Route::get('/consultations/{id}/receipt', [ConsultationController::class, 'recei
 Route::get('/doctors/{id}/payments', [DoctorController::class, 'payments'])
     ->name('doctors.payments');
 
-// 🔥 PAGAR DOCTOR
+// PAGAR DOCTOR
 Route::get('/doctors/{id}/pay', [DoctorController::class, 'payDoctor'])
     ->name('doctors.pay');
 
-// 🔥 LISTADO DE RECIBOS
+// LISTADO DE RECIBOS
 Route::get('/medical-receipts', [DoctorController::class, 'receiptsIndex'])
     ->name('medical_receipts.index');
 
-// 🔥 DETALLE DEL RECIBO
+// DETALLE DEL RECIBO
 Route::get('/medical-receipts/{number}', [DoctorController::class, 'receiptDetail'])
     ->name('medical_receipts.show');
-
 Route::get('/medical-receipts/{number}/pdf', [DoctorController::class, 'receiptPdf'])
     ->name('medical_receipts.pdf');
+
+// ========================================
+// INSUMOS
+// ========================================
+
+Route::middleware('auth')->group(function () {
+
+    // LISTADO
+    Route::get('/insumos', [InsumoController::class, 'index'])
+        ->name('insumos.index');
+
+    // CREAR
+    Route::get('/insumos/crear', [InsumoController::class, 'create'])
+        ->name('insumos.create');
+
+    Route::post('/insumos', [InsumoController::class, 'store'])
+        ->name('insumos.store');
+
+    // EDITAR
+    Route::get('/insumos/{id}/editar', [InsumoController::class, 'edit'])
+        ->name('insumos.edit');
+
+    Route::put('/insumos/{id}', [InsumoController::class, 'update'])
+        ->name('insumos.update');
+
+    // ELIMINAR
+    Route::delete('/insumos/{id}', [InsumoController::class, 'destroy'])
+        ->name('insumos.destroy');
+
+    // INGRESOS
+    Route::get('/insumos/ingresos', [IngresoInsumoController::class, 'index'])
+        ->name('insumos.ingresos.index');
+
+    Route::get('/insumos/ingresos/crear', [IngresoInsumoController::class, 'create'])
+        ->name('insumos.ingresos.create');
+
+    Route::post('/insumos/ingresos', [IngresoInsumoController::class, 'store'])
+        ->name('insumos.ingresos.store');
+
+    // SALIDAS
+    Route::get('/insumos/salidas', [SalidaInsumoController::class, 'index'])
+        ->name('insumos.salidas.index');
+
+    Route::get('/insumos/salidas/crear', [SalidaInsumoController::class, 'create'])
+        ->name('insumos.salidas.create');
+
+    Route::post('/insumos/salidas', [SalidaInsumoController::class, 'store'])
+        ->name('insumos.salidas.store');
+
+    // INVENTARIO
+    Route::get('/insumos/inventario', [InventarioController::class, 'index'])
+        ->name('insumos.inventario');
+
+    // PDF
+    Route::get('/insumos/inventario/pdf', [InventarioController::class, 'pdf'])
+        ->name('insumos.inventario.pdf');
+});
+
+
 
 require __DIR__ . '/auth.php';

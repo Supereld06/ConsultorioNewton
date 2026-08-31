@@ -68,8 +68,9 @@ public function index(Request $request)
             'nombres' => 'required',
             'ci' => 'required',
             'especialidad' => 'required',
-            'hora_inicio' => 'required|date_format:H:i',
-            'hora_fin' => 'required|date_format:H:i',
+            'telefono' => 'required',
+            'hora_inicio' => 'required|date_format:H:i,H:i:s',
+            'hora_fin' => 'required|date_format:H:i,H:i:s',
             'duracion_cita' => 'required|integer|min:15',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
@@ -93,6 +94,7 @@ public function index(Request $request)
             'ci' => $request->ci,
             'especialidad' => $request->especialidad,
             'telefono' => $request->telefono,
+            'email' => $request->email,
             'hora_inicio' => $request->hora_inicio,
             'hora_fin' => $request->hora_fin,
             'duracion_cita' => $request->duracion_cita,

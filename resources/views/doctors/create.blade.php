@@ -8,6 +8,8 @@
 
         <form method="POST" action="{{ route('doctors.store') }}" enctype="multipart/form-data">
 
+
+        
             @csrf
 
             <div class="row">

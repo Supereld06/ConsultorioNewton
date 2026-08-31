@@ -11,6 +11,7 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
+    
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Bootstrap -->
@@ -19,6 +20,8 @@
     <!-- Bootswatch Sketchy -->
     <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/sketchy/bootstrap.min.css" rel="stylesheet">
 
+    
+    
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -69,6 +72,54 @@
                     </a>
                 </li>
 
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownInsumos" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+
+                        <i class="bi bi-box-seam"></i>
+                        📋 Insumos
+
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownInsumos">
+                        <li>
+                            <a class="dropdown-item" href="{{ route('insumos.index') }}">
+                                <i class="bi bi-list-ul"></i>
+                                📄 Listado
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('insumos.ingresos.index') }}">
+                                <i class="bi bi-box-arrow-in-down"></i>
+                                📥 Ingreso
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('insumos.salidas.index') }}">
+                                <i class="bi bi-box-arrow-up"></i>
+                                📤 Salida
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('insumos.inventario') }}">
+                                <i class="bi bi-boxes"></i>
+                                📦 Inventario
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="">
+                        🧰 Insumos Agrupados
+                    </a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('appointments.index') }}">
                         📅 Citas Médicas
@@ -82,17 +133,29 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" href="">
+                        🛡️ Curaciones
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="">
+                        🩻 Estudios de Laboratorio
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('medical_receipts.index') }}">
                         📊 Reportes Pago Doctores
                     </a>
                 </li>
 
                 @if(Auth::user()->id == 1) <!-- Solo el usuario admin puede ver la sección de usuarios -->
-                <li class="nav-item">
-                    <a href="{{ route('users.index') }}" class="nav-link">
-                        👤 Usuarios
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ route('users.index') }}" class="nav-link">
+                            👤 Usuarios
+                        </a>
+                    </li>
                 @endif
 
             </ul>
