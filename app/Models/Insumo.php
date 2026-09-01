@@ -47,4 +47,11 @@ class Insumo extends Model
             'insumo_id'
         );
     }
+    public function salidas()
+    {
+        return $this->hasMany(
+            SalidaInsumoDetalle::class,
+            'insumo_id'
+        );
+    }
 }

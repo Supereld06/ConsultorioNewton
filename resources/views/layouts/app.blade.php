@@ -20,6 +20,8 @@
     <!-- Bootswatch Sketchy -->
     <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/sketchy/bootstrap.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     
     
     <!-- Vite -->
@@ -77,7 +79,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownInsumos" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
 
-                        <i class="bi bi-box-seam"></i>
+                        <i class=""></i>
                         📋 Insumos
 
                     </a>
@@ -85,19 +87,19 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownInsumos">
                         <li>
                             <a class="dropdown-item" href="{{ route('insumos.index') }}">
-                                <i class="bi bi-list-ul"></i>
+                                <i class=""></i>
                                 📄 Listado
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('insumos.ingresos.index') }}">
-                                <i class="bi bi-box-arrow-in-down"></i>
+                                <i class=""></i>
                                 📥 Ingreso
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('insumos.salidas.index') }}">
-                                <i class="bi bi-box-arrow-up"></i>
+                                <i class=""></i>
                                 📤 Salida
                             </a>
                         </li>
@@ -106,7 +108,7 @@
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('insumos.inventario') }}">
-                                <i class="bi bi-boxes"></i>
+                                <i class=""></i>
                                 📦 Inventario
                             </a>
                         </li>

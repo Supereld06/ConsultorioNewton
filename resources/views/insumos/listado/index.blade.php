@@ -392,7 +392,7 @@
                                             <a href="{{ route('insumos.edit', $insumo->id) }}" class="btn btn-warning btn-sm"
                                                 title="Editar">
 
-                                                <i class="bi bi-pencil-square">Editar</i>
+                                                <i class="bi bi-pencil-square"></i>
 
                                             </a>
 
@@ -407,7 +407,7 @@
                                                 <button type="submit" class="btn btn-danger btn-sm" title="Eliminar"
                                                     onclick="return confirm('¿Está seguro de eliminar este insumo?')">
 
-                                                    <i class="bi bi-trash">Eliminar</i>
+                                                    <i class="bi bi-trash"></i>
 
                                                 </button>
 

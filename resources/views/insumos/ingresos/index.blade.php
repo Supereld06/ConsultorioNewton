@@ -296,11 +296,9 @@
                                                         {{-- ACCIONES --}}
                                                         <td>
 
-                                                            <a href="#" class="btn btn-info btn-sm" title="Ver detalle">
-
-                                                                <i class="bi bi-eye"></i>
-
-                                                            </a>
+                                                            <a href="{{ route('insumos.ingresos.pdf', $ingreso->id) }}" target="_blank"
+                                                                class="btn btn-danger btn-sm" title="Ver ingreso en PDF"> <i
+                                                                    class="bi bi-file-earmark-pdf-fill"></i></a>
 
                                                         </td>
 

@@ -118,6 +118,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/insumos/ingresos', [IngresoInsumoController::class, 'store'])
         ->name('insumos.ingresos.store');
 
+    Route::get('/insumos/ingresos/{id}/pdf', [IngresoInsumoController::class, 'pdf'])->name('insumos.ingresos.pdf');
+
     // SALIDAS
     Route::get('/insumos/salidas', [SalidaInsumoController::class, 'index'])
         ->name('insumos.salidas.index');
@@ -127,6 +129,12 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/insumos/salidas', [SalidaInsumoController::class, 'store'])
         ->name('insumos.salidas.store');
+
+    Route::get('/insumos/salidas/{id}/pdf', [SalidaInsumoController::class, 'pdf'])
+        ->name('insumos.salidas.pdf');
+
+    Route::get('/insumos/salidas/{id}/recibo', [SalidaInsumoController::class, 'recibo'])
+        ->name('insumos.salidas.recibo');
 
     // INVENTARIO
     Route::get('/insumos/inventario', [InventarioController::class, 'index'])

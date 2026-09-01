@@ -8,6 +8,7 @@ use App\Models\IngresoInsumoDetalle;
 use App\Models\MovimientoInventario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class IngresoInsumoController extends Controller
 {
@@ -434,4 +435,27 @@ class IngresoInsumoController extends Controller
                 );
         }
     }
+
+
+    public function pdf($id)
+    {
+        $ingreso = IngresoInsumo::with([
+            'usuario',
+            'detalles.insumo'
+        ])
+            ->findOrFail($id);
+
+        $pdf = PDF::loadView(
+            'insumos.ingresos.pdf',
+            compact('ingreso')
+        );
+
+        $pdf->setPaper('A4', 'portrait');
+
+        return $pdf->stream(
+            "Ingreso_{$ingreso->codigo}.pdf"
+        );
+    }
+
+    
 }
