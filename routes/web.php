@@ -14,6 +14,9 @@ use App\Http\Controllers\InsumoController;
 use App\Http\Controllers\IngresoInsumoController;
 use App\Http\Controllers\SalidaInsumoController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\InsumoAgrupadoController;
+use App\Http\Controllers\CuracionController;
+use App\Http\Controllers\CuracionRecetaController;
 
 
 Route::get('/', function () {
@@ -143,6 +146,76 @@ Route::middleware('auth')->group(function () {
     // PDF
     Route::get('/insumos/inventario/pdf', [InventarioController::class, 'pdf'])
         ->name('insumos.inventario.pdf');
+
+    // =====================================================
+// INSUMOS AGRUPADOS
+// =====================================================
+
+    Route::get('/insumos/agrupados', [InsumoAgrupadoController::class, 'index'])
+        ->name('insumos.agrupados.index');
+
+    Route::get('/insumos/agrupados/create', [InsumoAgrupadoController::class, 'create'])
+        ->name('insumos.agrupados.create');
+
+    Route::post('/insumos/agrupados', [InsumoAgrupadoController::class, 'store'])
+        ->name('insumos.agrupados.store');
+
+    Route::get('/insumos/agrupados/{id}/edit', [InsumoAgrupadoController::class, 'edit'])
+        ->name('insumos.agrupados.edit');
+
+    Route::put('/insumos/agrupados/{id}', [InsumoAgrupadoController::class, 'update'])
+        ->name('insumos.agrupados.update');
+
+    Route::delete('/insumos/agrupados/{id}', [InsumoAgrupadoController::class, 'destroy'])
+        ->name('insumos.agrupados.destroy');
+
+
+    // =====================================================
+// CURACIONES
+// =====================================================
+
+    Route::get('/curaciones', [CuracionController::class, 'index'])
+        ->name('curaciones.index');
+
+    Route::get('/curaciones/create', [CuracionController::class, 'create'])
+        ->name('curaciones.create');
+
+    Route::post('/curaciones', [CuracionController::class, 'store'])
+        ->name('curaciones.store');
+
+    Route::get('/curaciones/{id}', [CuracionController::class, 'show'])
+        ->name('curaciones.show');
+
+    Route::get('/curaciones/{id}/edit', [CuracionController::class, 'edit'])
+        ->name('curaciones.edit');
+
+    Route::put('/curaciones/{id}', [CuracionController::class, 'update'])
+        ->name('curaciones.update');
+
+    Route::delete('/curaciones/{id}', [CuracionController::class, 'destroy'])
+        ->name('curaciones.destroy');
+
+
+    // =====================================================
+// PDF CURACIÓN
+// =====================================================
+
+    Route::get('/curaciones/{id}/pdf', [CuracionController::class, 'pdf'])
+        ->name('curaciones.pdf');
+
+
+    // =====================================================
+// RECETAS
+// =====================================================
+
+    Route::get('/curaciones/{id}/receta/create', [CuracionRecetaController::class, 'create'])
+        ->name('curaciones.receta.create');
+
+    Route::post('/curaciones/{id}/receta', [CuracionRecetaController::class, 'store'])
+        ->name('curaciones.receta.store');
+
+    Route::get('/curaciones/{id}/receta/pdf', [CuracionRecetaController::class, 'pdf'])
+        ->name('curaciones.receta.pdf');
 });
 
 

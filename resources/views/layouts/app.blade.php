@@ -11,7 +11,7 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    
+
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Bootstrap -->
@@ -22,8 +22,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    
-    
+
+
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -115,11 +115,27 @@
                     </ul>
                 </li>
 
-
-                <li class="nav-item">
-                    <a class="nav-link" href="">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAgrupados" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         🧰 Insumos Agrupados
                     </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownAgrupados">
+
+                        <li>
+                            <a class="dropdown-item" href="{{ route('insumos.agrupados.index') }}">
+                                📋 Listado
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="{{ route('insumos.agrupados.create') }}">
+                                ➕ Nuevo Combo
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
 
                 <li class="nav-item">
@@ -134,10 +150,39 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="">
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCuraciones" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+
                         🛡️ Curaciones
+
                     </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownCuraciones">
+
+                        <li>
+
+                            <a class="dropdown-item" href="{{ route('curaciones.index') }}">
+
+                                📋 Listado
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a class="dropdown-item" href="{{ route('curaciones.create') }}">
+
+                                ➕ Nueva Curación
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
                 </li>
 
                 <li class="nav-item">
