@@ -225,8 +225,8 @@
                                                             @if($paciente)
 
                                                                 <strong>
-                                                                    {{ $paciente->nombre }}
-                                                                    {{ $paciente->apellido }}
+                                                                    {{ $paciente->nombres }}
+                                                                    {{ $paciente->apellidos }}
                                                                 </strong>
 
                                                             @else
@@ -247,8 +247,8 @@
                                                             @if($doctor)
 
                                                                 Dr./Dra.
-                                                                {{ $doctor->nombre }}
-                                                                {{ $doctor->apellido }}
+                                                                {{ $doctor->nombres }}
+                                                                {{ $doctor->apellidos }}
 
                                                             @else
 

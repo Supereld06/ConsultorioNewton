@@ -102,13 +102,13 @@
     optional(
         $curacion->consultation->appointment
     )->patient
-)->nombre }}
+)->nombres }}
 
                 {{ optional(
     optional(
         $curacion->consultation->appointment
     )->patient
-)->apellido }}
+)->apellidos }}
 
             </td>
 
@@ -136,13 +136,13 @@
     optional(
         $curacion->consultation->appointment
     )->doctor
-)->nombre }}
+)->nombres }}
 
                 {{ optional(
     optional(
         $curacion->consultation->appointment
     )->doctor
-)->apellido }}
+)->apellidos }}
 
             </td>
 

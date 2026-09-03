@@ -17,6 +17,7 @@ use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\InsumoAgrupadoController;
 use App\Http\Controllers\CuracionController;
 use App\Http\Controllers\CuracionRecetaController;
+use App\Http\Controllers\EstudioComplementarioController;
 
 
 Route::get('/', function () {
@@ -216,6 +217,40 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/curaciones/{id}/receta/pdf', [CuracionRecetaController::class, 'pdf'])
         ->name('curaciones.receta.pdf');
+
+    // ======================================================
+// ESTUDIOS COMPLEMENTARIOS
+// ======================================================
+
+    Route::get('/estudios', [EstudioComplementarioController::class, 'index'])
+        ->name('estudios.index');
+
+    Route::get('/estudios/create', [EstudioComplementarioController::class, 'create'])
+        ->name('estudios.create');
+
+    Route::post('/estudios', [EstudioComplementarioController::class, 'store'])
+        ->name('estudios.store');
+
+    Route::get('/estudios/{id}', [EstudioComplementarioController::class, 'show'])
+        ->name('estudios.show');
+
+    Route::get('/estudios/{id}/edit', [EstudioComplementarioController::class, 'edit'])
+        ->name('estudios.edit');
+
+    Route::put('/estudios/{id}', [EstudioComplementarioController::class, 'update'])
+        ->name('estudios.update');
+
+    Route::delete('/estudios/{id}', [EstudioComplementarioController::class, 'destroy'])
+        ->name('estudios.destroy');
+
+    // PDF RECIBO PACIENTE
+    Route::get('/estudios/{id}/pdf-paciente', [EstudioComplementarioController::class, 'pdfPaciente'])
+        ->name('estudios.pdf.paciente');
+
+    // PDF RECIBO LABORATORIO
+    Route::get('/estudios/{id}/pdf-laboratorio', [EstudioComplementarioController::class, 'pdfLaboratorio'])
+        ->name('estudios.pdf.laboratorio');
+
 });
 
 

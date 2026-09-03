@@ -87,8 +87,8 @@
 
                             <h5>
 
-                                {{ $paciente->nombre }}
-                                {{ $paciente->apellido }}
+                                {{ $paciente->nombres }}
+                                {{ $paciente->apellidos }}
 
                             </h5>
 
@@ -138,8 +138,8 @@
 
                                 Dr./Dra.
 
-                                {{ $doctor->nombre }}
-                                {{ $doctor->apellido }}
+                                {{ $doctor->nombres }}
+                                {{ $doctor->apellidos }}
 
                             </h5>
 
@@ -506,8 +506,8 @@
 
                     @if($distribucion->doctor)
 
-                        {{ $distribucion->doctor->nombre }}
-                        {{ $distribucion->doctor->apellido }}
+                        {{ $distribucion->doctor->nombres }}
+                        {{ $distribucion->doctor->apellidos }}
 
                     @else
 

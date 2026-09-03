@@ -49,6 +49,7 @@ class CuracionController extends Controller
             'appointment.doctor'
         ])
             ->where('atendido', true)
+            ->whereDoesntHave('curacion')
             ->orderByDesc('id')
             ->get();
 
@@ -358,7 +359,7 @@ class CuracionController extends Controller
                     'fecha' => $request->fecha,
 
                     // Aquí guardamos el código de la curación
-                    'motivo' => $curacion->codigo,
+                    'motivo' => 'Salida por curacion - '.$curacion->codigo,
 
                     'total' => 0,
                     'monto_pagado' => 0,
@@ -523,6 +524,8 @@ class CuracionController extends Controller
 
                 $salida->update([
                     'total' => $totalSalida,
+                    'monto_pagado' => $totalSalida,
+                    'saldo_pendiente' => 0,
                 ]);
 
 

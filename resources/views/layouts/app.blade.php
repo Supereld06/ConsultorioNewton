@@ -186,7 +186,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="">
+                    <a class="nav-link" href="{{ route('estudios.index') }}">
                         🩻 Estudios de Laboratorio
                     </a>
                 </li>

@@ -90,26 +90,16 @@
                                 Consulta *
 
                             </label>
-
                             <select name="consultation_id" id="consultation_id" class="form-select" required>
 
-                                <option value="">
-                                    -- Seleccionar consulta --
-                                </option>
+                                <option value="">-- Seleccionar consulta --</option>
 
                                 @foreach($consultations as $consulta)
 
                                     @php
-
-                                        $appointment =
-                                            $consulta->appointment;
-
-                                        $paciente =
-                                            $appointment?->patient;
-
-                                        $doctor =
-                                            $appointment?->doctor;
-
+                                        $appointment = $consulta->appointment;
+                                        $paciente = $appointment?->patient;
+                                        $doctor = $appointment?->doctor;
                                     @endphp
 
                                     <option value="{{ $consulta->id }}" {{ old('consultation_id') == $consulta->id ? 'selected' : '' }}>
@@ -117,20 +107,11 @@
                                         Consulta #{{ $consulta->id }}
 
                                         @if($paciente)
-
-                                            -
-                                            {{ $paciente->nombre }}
-                                            {{ $paciente->apellido }}
-
+                                            - Paciente: {{ $paciente->nombres }} {{ $paciente->apellidos }}
                                         @endif
 
                                         @if($doctor)
-
-                                            -
-                                            Dr./Dra.
-                                            {{ $doctor->nombre }}
-                                            {{ $doctor->apellido }}
-
+                                            - Dr./Dra. {{ $doctor->nombres }} {{ $doctor->apellidos }}
                                         @endif
 
                                     </option>
@@ -564,9 +545,9 @@
 
                             <div class="input-group">
 
-                                <input type="number" name="doctor_porcentaje" id="doctorPorcentaje" class="form-control"
+                                <input type="number" name="porcentaje_doctor" id="doctorPorcentaje" class="form-control"
                                     min="0" max="100" step="0.01" value="{{ old(
-        'doctor_porcentaje',
+        'porcentaje_doctor',
         60
     ) }}">
 
@@ -593,9 +574,9 @@
 
                             <div class="input-group">
 
-                                <input type="number" name="enfermera_porcentaje" id="enfermeraPorcentaje"
+                                <input type="number" name="porcentaje_enfermera" id="enfermeraPorcentaje"
                                     class="form-control" min="0" max="100" step="0.01" value="{{ old(
-        'enfermera_porcentaje',
+        'porcentaje_enfermera',
         10
     ) }}">
 
@@ -780,162 +761,162 @@
 
                 fila.innerHTML = `
 
-                <div class="row g-2 align-items-end">
+                        <div class="row g-2 align-items-end">
 
-                    <div class="col-md-2">
+                            <div class="col-md-2">
 
-                        <label class="form-label">
-                            Tipo
-                        </label>
+                                <label class="form-label">
+                                    Tipo
+                                </label>
 
-                        <select class="form-select tipo-detalle"
-                                name="detalles[${contador}][tipo]">
+                                <select class="form-select tipo-detalle"
+                                        name="detalles[${contador}][tipo]">
 
-                            <option value="insumo">
-                                Insumo
-                            </option>
+                                    <option value="insumo">
+                                        Insumo
+                                    </option>
 
-                            <option value="agrupado">
-                                Combo
-                            </option>
+                                    <option value="agrupado">
+                                        Combo
+                                    </option>
 
-                            <option value="otro">
-                                Otro
-                            </option>
+                                    <option value="otro">
+                                        Otro
+                                    </option>
 
-                        </select>
+                                </select>
 
-                    </div>
-
-
-                    <div class="col-md-4 campo-insumo">
-
-                        <label class="form-label">
-                            Insumo
-                        </label>
-
-                        <select name="detalles[${contador}][insumo_id]"
-                                class="form-select select-insumo">
-
-                            <option value="">
-                                -- Seleccionar --
-                            </option>
-
-                            @foreach($insumos as $insumo)
-
-                                <option value="{{ $insumo->id }}"
-                                        data-precio="{{ $insumo->precio_venta }}">
-
-                                    {{ $insumo->codigo }} -
-                                    {{ $insumo->nombre }}
-
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-                    </div>
+                            </div>
 
 
-                    <div class="col-md-4 campo-agrupado d-none">
+                            <div class="col-md-4 campo-insumo">
 
-                        <label class="form-label">
-                            Insumo Agrupado
-                        </label>
+                                <label class="form-label">
+                                    Insumo
+                                </label>
 
-                        <select name="detalles[${contador}][insumo_agrupado_id]"
-                                class="form-select select-agrupado">
+                                <select name="detalles[${contador}][insumo_id]"
+                                        class="form-select select-insumo">
 
-                            <option value="">
-                                -- Seleccionar combo --
-                            </option>
+                                    <option value="">
+                                        -- Seleccionar --
+                                    </option>
 
-                            @foreach($agrupados as $agrupado)
+                                    @foreach($insumos as $insumo)
 
-                                <option value="{{ $agrupado->id }}"
-                                        data-precio="{{ $agrupado->precio }}">
+                                        <option value="{{ $insumo->id }}"
+                                                data-precio="{{ $insumo->precio_venta }}">
 
-                                    {{ $agrupado->codigo }} -
-                                    {{ $agrupado->nombre }}
+                                            {{ $insumo->codigo }} -
+                                            {{ $insumo->nombre }}
 
-                                </option>
+                                        </option>
 
-                            @endforeach
+                                    @endforeach
 
-                        </select>
+                                </select>
 
-                    </div>
-
-
-                    <div class="col-md-4 campo-otro d-none">
-
-                        <label class="form-label">
-                            Otro
-                        </label>
-
-                        <input type="text"
-                               name="detalles[${contador}][nombre_otro]"
-                               class="form-control"
-                               placeholder="Nombre del elemento">
-
-                    </div>
+                            </div>
 
 
-                    <div class="col-md-2">
+                            <div class="col-md-4 campo-agrupado d-none">
 
-                        <label class="form-label">
-                            Cantidad
-                        </label>
+                                <label class="form-label">
+                                    Insumo Agrupado
+                                </label>
 
-                        <input type="number"
-                               name="detalles[${contador}][cantidad]"
-                               class="form-control cantidad"
-                               step="0.01"
-                               min="0.01"
-                               value="1">
+                                <select name="detalles[${contador}][insumo_agrupado_id]"
+                                        class="form-select select-agrupado">
 
-                    </div>
+                                    <option value="">
+                                        -- Seleccionar combo --
+                                    </option>
+
+                                    @foreach($agrupados as $agrupado)
+
+                                        <option value="{{ $agrupado->id }}"
+                                                data-precio="{{ $agrupado->precio }}">
+
+                                            {{ $agrupado->codigo }} -
+                                            {{ $agrupado->nombre }}
+
+                                        </option>
+
+                                    @endforeach
+
+                                </select>
+
+                            </div>
 
 
-                    <div class="col-md-2">
+                            <div class="col-md-4 campo-otro d-none">
 
-                        <label class="form-label">
-                            Precio
-                        </label>
+                                <label class="form-label">
+                                    Otro
+                                </label>
 
-                        <div class="input-group">
+                                <input type="text"
+                                       name="detalles[${contador}][nombre_otro]"
+                                       class="form-control"
+                                       placeholder="Nombre del elemento">
 
-                            <span class="input-group-text">
-                                Bs
-                            </span>
+                            </div>
 
-                            <input type="number"
-                                   name="detalles[${contador}][precio_unitario]"
-                                   class="form-control precio"
-                                   step="0.01"
-                                   min="0"
-                                   value="0">
+
+                            <div class="col-md-2">
+
+                                <label class="form-label">
+                                    Cantidad
+                                </label>
+
+                                <input type="number"
+                                       name="detalles[${contador}][cantidad]"
+                                       class="form-control cantidad"
+                                       step="0.01"
+                                       min="0.01"
+                                       value="1">
+
+                            </div>
+
+
+                            <div class="col-md-2">
+
+                                <label class="form-label">
+                                    Precio
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Bs
+                                    </span>
+
+                                    <input type="number"
+                                           name="detalles[${contador}][precio_unitario]"
+                                           class="form-control precio"
+                                           step="0.01"
+                                           min="0"
+                                           value="0">
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-1">
+
+                                <button type="button"
+                                        class="btn btn-danger btnEliminar">
+
+                                    <i class="bi bi-trash"></i>
+
+                                </button>
+
+                            </div>
 
                         </div>
 
-                    </div>
-
-
-                    <div class="col-md-1">
-
-                        <button type="button"
-                                class="btn btn-danger btnEliminar">
-
-                            <i class="bi bi-trash"></i>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            `;
+                    `;
 
 
                 container.appendChild(fila);
@@ -1129,11 +1110,11 @@
 
                     alerta.innerHTML = `
 
-                    <i class="bi bi-exclamation-triangle"></i>
+                            <i class="bi bi-exclamation-triangle"></i>
 
-                    La distribución supera el 100%.
+                            La distribución supera el 100%.
 
-                `;
+                        `;
 
                 } else {
 
@@ -1142,12 +1123,12 @@
 
                     alerta.innerHTML = `
 
-                    <i class="bi bi-check-circle"></i>
+                            <i class="bi bi-check-circle"></i>
 
-                    Distribución correcta:
-                    100%
+                            Distribución correcta:
+                            100%
 
-                `;
+                        `;
 
                 }
 
