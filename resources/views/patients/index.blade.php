@@ -18,8 +18,6 @@
             </a>
 
         </div>
-
-
         <!-- BUSCADOR -->
         <div class="card mb-4">
 
@@ -32,9 +30,9 @@
                         <input type="text" name="search" value="{{ $search ?? '' }}" class="form-control"
                             placeholder="Buscar por nombre, apellido o CI">
 
-                        <button class="btn btn-primary">
-                            <i class="bi bi-search"></i> Buscar
-                        </button>
+                        <div class="d-flex gap-2"> <button type="submit" class="btn btn-primary"> <i
+                                    class="bi bi-search me-1"></i> Buscar </button> <a href="{{ route('patients.index') }}"
+                                class="btn btn-secondary"> <i class="bi bi-x-circle me-1"></i> Limpiar </a> </div>
 
                     </div>
 
@@ -44,6 +42,19 @@
 
         </div>
 
+
+        @if(session('success'))
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill"></i>
+                <strong>Correcto:</strong>
+                {{ session('success') }}
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert">
+                </button>
+            </div>
+
+        @endif
 
         <!-- TABLA -->
         <div class="card shadow-sm">
@@ -69,93 +80,64 @@
                     <tbody>
 
                         @forelse($patients as $patient)
-
                             <tr>
-
                                 <td>{{ $patient->id }}</td>
-
                                 <!-- PACIENTE -->
                                 <td>
-
                                     <div class="d-flex align-items-center">
-
                                         @if($patient->fotografia)
-
                                             <img src="{{ asset('storage/' . $patient->fotografia) }}" width="45" height="45"
                                                 class="rounded-circle me-3" style="object-fit:cover;">
-
                                         @else
-
                                             <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3"
                                                 style="width:45px;height:45px;font-weight:bold;">
-
                                                 {{ strtoupper(substr($patient->nombres, 0, 1)) }}
-
                                             </div>
-
                                         @endif
-
-
                                         <div>
-
                                             <strong>
                                                 {{ $patient->nombres }} {{ $patient->apellidos }}
                                             </strong>
-
                                             <div class="text-muted small">
                                                 {{ Carbon::parse($patient->fecha_nacimiento)->format('d/m/Y') }}
                                             </div>
-
                                         </div>
-
                                     </div>
-
                                 </td>
 
 
                                 <!-- CI -->
                                 <td>
-
                                     <span class="">
                                         {{ $patient->ci }}
                                     </span>
-
                                 </td>
 
 
                                 <!-- EDAD -->
                                 <td>
-
                                     <span class="">
                                         {{ Carbon::parse($patient->fecha_nacimiento)->age }} años
                                     </span>
-
                                 </td>
 
 
                                 <!-- TELEFONO -->
                                 <td>
-
                                     {{ $patient->telefono }}
-
                                 </td>
 
                                 <td>
-                                    
-                                    <a href="{{ route('patients.historial', $patient->id) }}" class="btn btn-info btn-sm">
+                                    <a href="{{ route('patients.historial', $patient->id) }}" class="btn btn-success btn-sm">
                                         Historial
                                     </a>
                                 </td>
 
                                 <!-- ACCIONES -->
                                 <td>
-
-                                    <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-warning btn-sm">
-
-                                        <i class="bi bi-pencil">Editar</i>
-
+                                    <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-info btn-sm">
+                                        <i class="bi bi-pencil"></i>
                                     </a>
-
                                     <form action="{{ route('patients.destroy', $patient->id) }}" method="POST"
                                         style="display:inline">
 
@@ -163,51 +145,32 @@
                                         @method('DELETE')
 
                                         <button class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar paciente?')">
-
-                                            <i class="bi bi-trash">Eliminar</i>
-
+                                            <i class="bi bi-trash"></i>
                                         </button>
-
                                     </form>
-
                                 </td>
-
                             </tr>
 
                         @empty
 
                             <tr>
-
                                 <td colspan="6" class="text-center p-4">
-
                                     <div class="text-muted">
-
                                         No existen pacientes registrados
-
                                     </div>
-
                                 </td>
-
                             </tr>
-
                         @endforelse
-
                     </tbody>
-
                 </table>
-
             </div>
-
         </div>
 
 
         <!-- PAGINACION -->
         <div class="mt-4">
-
             {{ $patients->links() }}
-
         </div>
-
     </div>
 
 @endsection

@@ -6,32 +6,44 @@
 
         <h3>Registrar Doctor</h3>
 
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>¡Atención!</strong>
+
+                <ul class="mb-0 mt-2">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar">
+                </button>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('doctors.store') }}" enctype="multipart/form-data">
-
-
-        
             @csrf
 
             <div class="row">
 
                 <div class="col-md-6 mb-3">
-                    <label>Apellidos</label>
-                    <input type="text" name="apellidos" class="form-control" oninput="this.value = this.value.toUpperCase();">
+                    <label>Apellidos * </label>
+                    <input type="text" name="apellidos" class="form-control" required>
                 </div>
 
                 <div class="col-md-6 mb-3">
-                    <label>Nombres</label>
-                    <input type="text" name="nombres" class="form-control" oninput="this.value = this.value.toUpperCase();">
+                    <label>Nombres *</label>
+                    <input type="text" name="nombres" class="form-control" required>
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label>CI</label>
-                    <input type="text" name="ci" class="form-control" oninput="this.value = this.value.toUpperCase();">
+                    <label>Carnet * </label>
+                    <input type="text" name="ci" class="form-control" required>
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label>Especialidad</label>
-                    <input type="text" name="especialidad" class="form-control" oninput="this.value = this.value.toUpperCase();">
+                    <label>Especialidad * </label>
+                    <input type="text" name="especialidad" class="form-control" required>
                 </div>
 
                 <div class="col-md-4 mb-3">

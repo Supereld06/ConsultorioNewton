@@ -8,6 +8,8 @@ use App\Models\SalidaInsumoDetalle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Caja;
+use App\Services\CajaService;
 
 class SalidaInsumoController extends Controller
 {
@@ -17,16 +19,38 @@ class SalidaInsumoController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function index()
+    public function index(Request $request)
     {
-        $salidas = SalidaInsumo::with('usuario')
+        $buscar = $request->input('buscar');
+
+
+        $query = SalidaInsumo::with('usuario');
+
+        if ($buscar) {
+
+            $query->where(function ($q) use ($buscar) {
+
+                $q->where('codigo', 'like', '%' . $buscar . '%')
+                    ->orWhere('motivo', 'like', '%' . $buscar . '%')
+
+                    ->orWhereHas('usuario', function ($q) use ($buscar) {
+                        $q->where('name', 'like', '%' . $buscar . '%');
+                    });
+
+            });
+        }
+
+        $salidas = $query
             ->latest()
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view(
             'insumos.salidas.index',
             compact('salidas')
         );
+
+
     }
 
 
@@ -42,9 +66,13 @@ class SalidaInsumoController extends Controller
             ->orderBy('nombre')
             ->get();
 
+        $cajas = Caja::where('estado', true)
+            ->orderBy('id')
+            ->get();
+
         return view(
             'insumos.salidas.create',
-            compact('insumos')
+            compact('insumos', 'cajas')
         );
     }
 
@@ -63,6 +91,8 @@ class SalidaInsumoController extends Controller
 
             'motivo' => 'nullable|string|max:255',
 
+            'caja_id' => 'required|integer|exists:cajas,id',
+
             'insumos' => 'required|array|min:1',
 
             'insumos.*.id' => 'required|exists:insumos,id',
@@ -79,7 +109,7 @@ class SalidaInsumoController extends Controller
         DB::beginTransaction();
 
         try {
-
+            $cajaService = app(CajaService::class);
             /*
             |--------------------------------------------------------------------------
             | CALCULAR TOTAL
@@ -141,6 +171,7 @@ class SalidaInsumoController extends Controller
 
             $saldoPendiente = $total - $montoPagado;
 
+            $caja = Caja::findOrFail($request->caja_id);
 
             /*
             |--------------------------------------------------------------------------
@@ -176,23 +207,34 @@ class SalidaInsumoController extends Controller
             $salida = SalidaInsumo::create([
 
                 'codigo' => $codigo,
-
                 'fecha' => $request->fecha,
-
                 'motivo' => $request->motivo,
-
                 'total' => $total,
-
                 'monto_pagado' => $montoPagado,
-
                 'saldo_pendiente' => $saldoPendiente,
-
                 'observacion' => $request->observacion,
-
                 'usuario_id' => auth()->id(),
 
             ]);
 
+            /*
+|--------------------------------------------------------------------------
+| INGRESO A CAJA
+|--------------------------------------------------------------------------
+*/
+
+            if ($montoPagado > 0) {
+
+                $cajaService->ingresar(
+                    $caja,
+                    $montoPagado,
+                    'Venta de insumos',
+                    'SalidaInsumo',
+                    $salida->id,
+                    'Ingreso por venta de insumos - ' . $codigo
+                );
+
+            }
 
             /*
             |--------------------------------------------------------------------------

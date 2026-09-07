@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -10,165 +9,167 @@
 
     <style>
         @page {
-            margin: 20px;
+            margin: 15px;
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            font-size: 11px;
+            font-family: Arial, sans-serif;
+            font-size: 10px;
             color: #2c3e50;
+            margin: 0;
             background: #ffffff;
-            page-break-after: auto;
+        }
+
+        .documento {
+            width: 100%;
+        }
+
+
+        /* ==========================================
+           MARCA DE AGUA
+           ========================================== */
+
+        .watermark {
+            position: fixed;
+            top: 42%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.04;
+        }
+
+        .watermark img {
+            width: 300px;
         }
 
 
         /* ==========================================
            ENCABEZADO
-        ========================================== */
+           ========================================== */
 
         .header {
             text-align: center;
-            border-bottom: 3px solid #0a2540;
-            padding-bottom: 12px;
-            margin-bottom: 18px;
-            position: relative;
+            border-bottom: 2px solid #0a2540;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .logo {
-            width: 100px;
-            margin-bottom: 5px;
+            width: 85px;
+            margin-bottom: 3px;
+        }
+
+        .consultorio {
+            font-size: 11px;
+            font-weight: bold;
+            color: #0a2540;
+            margin: 2px 0;
         }
 
         .header h2 {
-            margin: 5px 0;
-            font-size: 18px;
+            margin: 5px 0 2px;
+            font-size: 17px;
             color: #0a2540;
             letter-spacing: 1px;
         }
 
         .header p {
-            margin: 3px 0;
-            font-size: 11px;
+            margin: 2px 0;
             color: #4a5a6a;
+            font-size: 8px;
         }
 
 
         /* ==========================================
            INFORMACIÓN
-        ========================================== */
+           ========================================== */
 
         .info {
             margin-bottom: 12px;
-            padding: 10px;
-            border-radius: 10px;
+            padding: 8px;
             background: #f4f7fb;
             border-left: 4px solid #0a2540;
         }
 
         .info strong {
             display: inline-block;
-            width: 150px;
+            width: 105px;
             color: #0a2540;
         }
 
 
         /* ==========================================
-           SECCIONES
-        ========================================== */
+           SECCIÓN
+           ========================================== */
 
         .section {
             margin-top: 12px;
-            padding: 12px;
-            border-radius: 12px;
-            background: #ffffff;
+            padding: 8px;
             border: 1px solid #dce3ec;
-            position: relative;
-            overflow: visible;
-            page-break-inside: avoid;
+            background: #ffffff;
         }
 
         .section-title {
             font-weight: bold;
             margin-bottom: 8px;
             color: #0a2540;
-            font-size: 13px;
+            font-size: 11px;
             letter-spacing: 1px;
         }
 
 
         /* ==========================================
-           TABLA DE INSUMOS
-        ========================================== */
+           TABLA DE DETALLE
+           ========================================== */
 
-        .table {
+        table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 8px;
         }
 
-        .table th {
+        th {
             background: #0a2540;
-            color: #ffffff;
-            padding: 8px;
+            color: white;
+            border: 1px solid #0a2540;
+            padding: 6px 5px;
             text-align: left;
-            font-size: 10px;
+            font-size: 9px;
         }
 
-        .table td {
-            padding: 7px;
+        td {
             border-bottom: 1px solid #dce3ec;
-            font-size: 10px;
+            padding: 6px 5px;
+            font-size: 9px;
         }
 
-        .table tr {
-            page-break-inside: avoid;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .text-right {
+        .right {
             text-align: right;
+        }
+
+        .center {
+            text-align: center;
         }
 
 
         /* ==========================================
            RESUMEN
-        ========================================== */
+           ========================================== */
 
         .resumen {
-            width: 100%;
-            margin-top: 15px;
-        }
-
-        .resumen-box {
-            width: 45%;
+            margin-top: 12px;
+            width: 48%;
             margin-left: auto;
-            border: 1px solid #dce3ec;
-            border-radius: 10px;
-            padding: 10px;
         }
 
-        .resumen-row {
-            width: 100%;
-            padding: 5px 0;
+        .resumen td {
+            border: none;
+            padding: 4px;
+            font-size: 9px;
         }
 
-        .resumen-label {
-            display: inline-block;
-            width: 55%;
-        }
-
-        .resumen-value {
-            display: inline-block;
-            width: 40%;
-            text-align: right;
+        .total-final {
+            border-top: 2px solid #0a2540 !important;
+            font-size: 13px !important;
             font-weight: bold;
-        }
-
-        .total {
-            font-size: 14px;
             color: #0a2540;
         }
 
@@ -183,89 +184,66 @@
 
         /* ==========================================
            OBSERVACIÓN
-        ========================================== */
+           ========================================== */
 
         .observacion {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 10px;
+            margin-top: 12px;
+            padding: 8px;
             background: #f4f7fb;
             border-left: 4px solid #0a2540;
+            font-size: 9px;
         }
 
-        .observacion-title {
+        .observacion strong {
+            color: #0a2540;
+        }
+
+        .firmas {
+            width: 100%;
+            margin-top: 45px;
+        }
+
+        .firma {
+            width: 44%;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .espacio {
+            width: 9%;
+            display: inline-block;
+        }
+
+        .linea {
+            border-top: 1px solid #0a2540;
+            width: 150px;
+            margin: auto;
+        }
+
+        .firma-titulo {
+            margin-top: 4px;
             font-weight: bold;
             color: #0a2540;
-            margin-bottom: 5px;
+            font-size: 9px;
         }
 
-
-        /* ==========================================
-           MARCA DE AGUA
-        ========================================== */
-
-        .watermark {
-            position: fixed;
-            top: 45%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.05;
-            z-index: -1;
-        }
-
-        .watermark img {
-            width: 340px;
-        }
-
-
-        /* ==========================================
-           DECORACIÓN
-        ========================================== */
-
-        body::before {
-            content: "";
-            position: fixed;
-            top: -50px;
-            left: -50px;
-            width: 200px;
-            height: 200px;
-            border: 3px solid #0a2540;
-            border-radius: 50%;
-            opacity: 0.05;
-        }
-
-        body::after {
-            content: "";
-            position: fixed;
-            bottom: -60px;
-            right: -60px;
-            width: 220px;
-            height: 220px;
-            border: 3px solid #0a2540;
-            border-radius: 50%;
-            opacity: 0.05;
-        }
-
-
-        /* ==========================================
-           FOOTER
-        ========================================== */
-
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 10px;
+        .firma-subtitulo {
+            margin-top: 2px;
+            font-size: 8px;
             color: #4a5a6a;
         }
 
-        .footer hr {
-            border: none;
+        /* ==========================================
+           FOOTER
+           ========================================== */
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 8px;
+            color: #4a5a6a;
             border-top: 1px solid #0a2540;
-            margin-bottom: 6px;
-            opacity: 0.4;
+            padding-top: 6px;
         }
 
         .footer p {
@@ -278,298 +256,317 @@
 
 <body>
 
-
-    {{-- ==========================================
-    MARCA DE AGUA
-    ========================================== --}}
-
-    <div class="watermark">
-
-        <img src="{{ public_path('img/logo.jpeg') }}">
-
-    </div>
+    <div class="documento">
 
 
-    {{-- ==========================================
-    ENCABEZADO
-    ========================================== --}}
+        {{-- ==========================================
+        MARCA DE AGUA
+        ========================================== --}}
 
-    <div class="header">
+        <div class="watermark">
 
-        <img src="{{ public_path('img/logo.jpeg') }}" class="logo">
-
-        <h2>
-            INGRESO DE INSUMOS
-        </h2>
-
-        <p>
-            Documento de registro de ingreso
-        </p>
-
-    </div>
-
-
-    {{-- ==========================================
-    INFORMACIÓN DEL INGRESO
-    ========================================== --}}
-
-    <div class="info">
-
-        <strong>Número de Ingreso:</strong>
-
-        {{ $ingreso->codigo }}
-
-        <br>
-
-
-        <strong>Fecha de Ingreso:</strong>
-
-        {{ $ingreso->fecha->format('d/m/Y') }}
-
-        <br>
-
-
-        <strong>Proveedor:</strong>
-
-        {{ $ingreso->proveedor ?: 'Sin proveedor' }}
-
-        <br>
-
-
-        <strong>Registrado por:</strong>
-
-        {{ $ingreso->usuario->name ?? 'N/A' }}
-
-    </div>
-
-
-    {{-- ==========================================
-    DETALLE DE INSUMOS
-    ========================================== --}}
-
-    <div class="section">
-
-        <div class="section-title">
-
-            DETALLE DE INSUMOS
+            <img src="{{ public_path('img/logo.jpeg') }}">
 
         </div>
 
 
-        <table class="table">
+        {{-- ==========================================
+        ENCABEZADO
+        ========================================== --}}
 
-            <thead>
+        <div class="header">
 
-                <tr>
+            <img src="{{ public_path('img/logo.jpeg') }}" class="logo">
 
-                    <th class="text-center">
-                        #
-                    </th>
+            <h2>
+                INGRESO DE INSUMOS
+            </h2>
 
-                    <th>
-                        Código
-                    </th>
+            <p>
+                Documento de registro de ingreso
+            </p>
 
-                    <th>
-                        Insumo
-                    </th>
-
-                    <th class="text-center">
-                        Cant.
-                    </th>
-
-                    <th class="text-right">
-                        P. Compra
-                    </th>
-
-                    <th class="text-right">
-                        P. Venta
-                    </th>
-
-                    <th class="text-right">
-                        Subtotal
-                    </th>
-
-                </tr>
-
-            </thead>
+        </div>
 
 
-            <tbody>
+        {{-- ==========================================
+        INFORMACIÓN
+        ========================================== --}}
 
-                @foreach($ingreso->detalles as $detalle)
+        <div class="info">
+
+            <strong>
+                N° de Ingreso:
+            </strong>
+
+            {{ $ingreso->codigo }}
+
+            <br>
+
+            <strong>
+                Fecha:
+            </strong>
+
+            {{ $ingreso->fecha->format('d/m/Y') }}
+
+            <br>
+
+            <strong>
+                Proveedor:
+            </strong>
+
+            {{ $ingreso->proveedor ?: 'Sin proveedor' }}
+
+            <br>
+
+            <strong>
+                Registrado por:
+            </strong>
+
+            {{ $ingreso->usuario->name ?? 'N/A' }}
+
+        </div>
+
+
+        {{-- ==========================================
+        DETALLE
+        ========================================== --}}
+
+        <div class="section">
+
+            <div class="section-title">
+                DETALLE DE INSUMOS
+            </div>
+
+            <table>
+
+                <thead>
 
                     <tr>
 
-                        <td class="text-center">
+                        <th class="center">
+                            #
+                        </th>
 
-                            {{ $loop->iteration }}
+                        <th>
+                            Código
+                        </th>
 
-                        </td>
+                        <th>
+                            Insumo
+                        </th>
 
+                        <th class="center">
+                            Cant.
+                        </th>
 
-                        <td>
+                        <th class="right">
+                            P. Compra
+                        </th>
 
-                            {{ $detalle->insumo->codigo ?? 'N/A' }}
+                        <th class="right">
+                            P. Venta
+                        </th>
 
-                        </td>
-
-
-                        <td>
-
-                            {{ $detalle->insumo->nombre ?? 'Insumo eliminado' }}
-
-                        </td>
-
-
-                        <td class="text-center">
-
-                            {{ number_format($detalle->cantidad, 2) }}
-
-                        </td>
-
-
-                        <td class="text-right">
-
-                            Bs.
-                            {{ number_format($detalle->precio_compra, 2) }}
-
-                        </td>
-
-
-                        <td class="text-right">
-
-                            Bs.
-                            {{ number_format($detalle->precio_venta, 2) }}
-
-                        </td>
-
-
-                        <td class="text-right">
-
-                            <strong>
-
-                                Bs.
-                                {{ number_format($detalle->subtotal, 2) }}
-
-                            </strong>
-
-                        </td>
+                        <th class="right">
+                            Subtotal
+                        </th>
 
                     </tr>
 
-                @endforeach
+                </thead>
 
-            </tbody>
+
+                <tbody>
+
+                    @foreach($ingreso->detalles as $index => $detalle)
+
+                        <tr>
+
+                            <td class="center">
+                                {{ $index + 1 }}
+                            </td>
+
+                            <td>
+                                {{ $detalle->insumo->codigo ?? '-' }}
+                            </td>
+
+                            <td>
+                                {{ $detalle->insumo->nombre ?? '-' }}
+                            </td>
+
+                            <td class="center">
+                                {{ number_format($detalle->cantidad, 2) }}
+                            </td>
+
+                            <td class="right">
+                                Bs.
+                                {{ number_format($detalle->precio_compra, 2) }}
+                            </td>
+
+                            <td class="right">
+                                Bs.
+                                {{ number_format($detalle->precio_venta, 2) }}
+                            </td>
+
+                            <td class="right">
+                                Bs.
+                                {{ number_format($detalle->subtotal, 2) }}
+                            </td>
+
+                        </tr>
+
+                    @endforeach
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {{-- ==========================================
+        TOTALES
+        ========================================== --}}
+
+        <table class="resumen">
+
+            <tr>
+
+                <td>
+                    <strong>
+                        Total:
+                    </strong>
+                </td>
+
+                <td class="right">
+                    Bs.
+                    {{ number_format($ingreso->total, 2) }}
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td class="pagado">
+                    <strong>
+                        Monto pagado:
+                    </strong>
+                </td>
+
+                <td class="right pagado">
+                    Bs.
+                    {{ number_format($ingreso->monto_pagado, 2) }}
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td class="total-final">
+                    SALDO PENDIENTE:
+                </td>
+
+                <td class="right total-final pendiente">
+                    Bs.
+                    {{ number_format($ingreso->saldo_pendiente, 2) }}
+                </td>
+
+            </tr>
 
         </table>
 
-    </div>
+
+        {{-- ==========================================
+        OBSERVACIÓN
+        ========================================== --}}
+
+        @if($ingreso->observacion)
+
+            <div class="observacion">
+
+                <strong>
+                    Observación:
+                </strong>
+
+                {{ $ingreso->observacion }}
+
+            </div>
+
+        @endif
 
 
-    {{-- ==========================================
-    RESUMEN
-    ========================================== --}}
+        {{-- ==========================================
+        FIRMAS
+        ========================================== --}}
 
-    <div class="resumen">
+        <div class="firmas">
 
-        <div class="resumen-box">
+            <div class="firma">
 
-            <div class="resumen-row">
+                <div class="linea"></div>
 
-                <span class="resumen-label">
-                    Total:
-                </span>
+                <div class="firma-titulo">
+                    Entregado por
+                </div>
 
-                <span class="resumen-value total">
-
-                    Bs.
-                    {{ number_format($ingreso->total, 2) }}
-
-                </span>
+                <div class="firma-subtitulo">
+                    Responsable de la entrega
+                </div>
 
             </div>
 
 
-            <div class="resumen-row">
-
-                <span class="resumen-label">
-                    Monto pagado:
-                </span>
-
-                <span class="resumen-value pagado">
-
-                    Bs.
-                    {{ number_format($ingreso->monto_pagado, 2) }}
-
-                </span>
-
+            <div class="espacio">
+                &nbsp;
             </div>
 
 
-            <div class="resumen-row">
+            <div class="firma">
 
-                <span class="resumen-label">
-                    Saldo pendiente:
-                </span>
+                <div class="linea"></div>
 
-                <span class="resumen-value pendiente">
+                <div class="firma-titulo">
+                    Recibido por
+                </div>
 
-                    Bs.
-                    {{ number_format($ingreso->saldo_pendiente, 2) }}
-
-                </span>
+                <div class="firma-subtitulo">
+                    Responsable de la recepción
+                </div>
 
             </div>
 
         </div>
 
-    </div>
 
+        {{-- ==========================================
+        FOOTER
+        ========================================== --}}
 
-    {{-- ==========================================
-    OBSERVACIÓN
-    ========================================== --}}
+        <div class="footer">
 
-    @if($ingreso->observacion)
+            <p>
+                Dirección: M. Ricardo Terrazas #1067 entre Benjamín Blanco y Medizabal
+            </p>
 
-        <div class="observacion">
+            <p>
+                Teléfono: 68574372
+            </p>
 
-            <div class="observacion-title">
+            <p>
+                TikTok: @consultorio_mediconewton
+            </p>
 
-                OBSERVACIÓN
-
-            </div>
-
-            {{ $ingreso->observacion }}
+            <p>
+                Gracias por su preferencia
+            </p>
 
         </div>
 
-    @endif
-
-
-    {{-- ==========================================
-    FOOTER
-    ========================================== --}}
-
-    <div class="footer">
-
-        <hr>
-
-        <p>
-            Direccion: M. Ricardo Terrazas #1067 entre Benjamín Blanco y Medizabal
-        </p>
-
-        <p>
-            Telefono: 68574372
-        </p>
-
-        <p>
-            TikTok: consultorio_mediconewton
-        </p>
 
     </div>
-
 
 </body>
 

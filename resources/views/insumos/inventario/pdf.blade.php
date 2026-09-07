@@ -353,25 +353,7 @@
     </div>
 
 
-    {{-- FOOTER --}}
-
-    <div class="footer">
-
-        <hr>
-
-        <p>
-            Dirección: M. Ricardo Terrazas #1067 entre Benjamín Blanco y Medizabal
-        </p>
-
-        <p>
-            Teléfono: 68574372
-        </p>
-
-        <p>
-            TikTok: consultorio_mediconewton
-        </p>
-
-    </div>
+ 
 
 
 </body>

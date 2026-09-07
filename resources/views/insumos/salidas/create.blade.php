@@ -4,7 +4,7 @@
 
     <div class="container">
 
-        
+
         {{-- ==========================================
         ENCABEZADO
         ========================================== --}}
@@ -117,6 +117,7 @@
 
                     <div class="row g-3">
 
+                        {{-- FECHA --}}
                         <div class="col-md-4">
 
                             <label class="form-label">
@@ -129,7 +130,8 @@
                         </div>
 
 
-                        <div class="col-md-8">
+                        {{-- MOTIVO --}}
+                        <div class="col-md-4">
 
                             <label class="form-label">
                                 Motivo
@@ -137,6 +139,35 @@
 
                             <input type="text" name="motivo" class="form-control" value="{{ old('motivo') }}"
                                 placeholder="Ej.: Venta, entrega al paciente, consumo interno...">
+
+                        </div>
+
+
+                        {{-- CAJA --}}
+                        <div class="col-md-4">
+
+                            <label class="form-label">
+                                Caja
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <select name="caja_id" id="caja_id" class="form-select" required>
+
+                                @foreach($cajas as $caja)
+
+                                    <option value="{{ $caja->id }}" {{ old('caja_id', 3) == $caja->id ? 'selected' : '' }}>
+                                        Caja {{ $caja->id }} -
+                                        {{ $caja->nombre }}
+                                        | Bs. {{ number_format($caja->saldo, 2) }}
+                                    </option>
+
+                                @endforeach
+
+                            </select>
+
+                            <small class="text-muted">
+                                Caja utilizada para registrar el cobro de la salida.
+                            </small>
 
                         </div>
 
@@ -173,7 +204,10 @@
                                 Insumo
                             </label>
 
-                            <select id="selectInsumo" class="form-select">
+                            <input type="text" id="buscarInsumo" class="form-control mb-2"
+                                placeholder="🔎 Escriba código o nombre del insumo..." autocomplete="off">
+
+                            <select id="selectInsumo" class="form-select" size="6">
 
                                 <option value="">
                                     Seleccione un insumo
@@ -184,11 +218,7 @@
                                     <option value="{{ $insumo->id }}" data-nombre="{{ $insumo->nombre }}"
                                         data-codigo="{{ $insumo->codigo }}" data-stock="{{ $insumo->stock }}"
                                         data-precio="{{ $insumo->precio_venta }}">
-
-                                        {{ $insumo->codigo }}
-                                        -
-                                        {{ $insumo->nombre }}
-
+                                        {{ $insumo->codigo }} - {{ $insumo->nombre }}
                                     </option>
 
                                 @endforeach
@@ -476,6 +506,41 @@
 
 
             /*
+    |--------------------------------------------------------------------------
+    | BUSCAR / FILTRAR INSUMOS
+    |--------------------------------------------------------------------------
+    */
+
+            buscarInsumo.addEventListener('input', function () {
+
+                const texto = this.value.toLowerCase().trim();
+
+                const opciones = selectInsumo.querySelectorAll(
+                    'option[data-nombre]'
+                );
+
+                opciones.forEach(function (option) {
+
+                    const nombre = option.dataset.nombre.toLowerCase();
+                    const codigo = option.dataset.codigo.toLowerCase();
+
+                    if (
+                        nombre.includes(texto) ||
+                        codigo.includes(texto)
+                    ) {
+
+                        option.style.display = '';
+
+                    } else {
+
+                        option.style.display = 'none';
+
+                    }
+
+                });
+
+            });
+            /*
             |--------------------------------------------------------------------------
             | SELECCIONAR INSUMO
             |--------------------------------------------------------------------------
@@ -647,68 +712,68 @@
 
                     fila.innerHTML = `
 
-                    <td>
-                        ${index + 1}
-                    </td>
+                                <td>
+                                    ${index + 1}
+                                </td>
 
-                    <td>
-                        <span class="badge bg-secondary">
-                            ${producto.codigo}
-                        </span>
-                    </td>
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        ${producto.codigo}
+                                    </span>
+                                </td>
 
-                    <td>
-                        <strong>
-                            ${producto.nombre}
-                        </strong>
-                    </td>
+                                <td>
+                                    <strong>
+                                        ${producto.nombre}
+                                    </strong>
+                                </td>
 
-                    <td>
-                        ${producto.stock}
-                    </td>
+                                <td>
+                                    ${producto.stock}
+                                </td>
 
-                    <td>
+                                <td>
 
-                        ${producto.cantidad}
+                                    ${producto.cantidad}
 
-                        <input
-                            type="hidden"
-                            name="insumos[${index}][id]"
-                            value="${producto.id}"
-                        >
+                                    <input
+                                        type="hidden"
+                                        name="insumos[${index}][id]"
+                                        value="${producto.id}"
+                                    >
 
-                        <input
-                            type="hidden"
-                            name="insumos[${index}][cantidad]"
-                            value="${producto.cantidad}"
-                        >
+                                    <input
+                                        type="hidden"
+                                        name="insumos[${index}][cantidad]"
+                                        value="${producto.cantidad}"
+                                    >
 
-                    </td>
+                                </td>
 
-                    <td>
-                        Bs. ${producto.precio.toFixed(2)}
-                    </td>
+                                <td>
+                                    Bs. ${producto.precio.toFixed(2)}
+                                </td>
 
-                    <td>
-                        <strong>
-                            Bs. ${subtotal.toFixed(2)}
-                        </strong>
-                    </td>
+                                <td>
+                                    <strong>
+                                        Bs. ${subtotal.toFixed(2)}
+                                    </strong>
+                                </td>
 
-                    <td>
+                                <td>
 
-                        <button
-                            type="button"
-                            class="btn btn-danger btn-sm btnEliminar"
-                            data-id="${producto.id}">
+                                    <button
+                                        type="button"
+                                        class="btn btn-danger btn-sm btnEliminar"
+                                        data-id="${producto.id}">
 
-                            <i class="bi bi-trash"></i>
+                                        <i class="bi bi-trash"></i>
 
-                        </button>
+                                    </button>
 
-                    </td>
+                                </td>
 
-                `;
+                            `;
 
 
                     tabla.appendChild(fila);

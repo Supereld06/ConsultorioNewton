@@ -9,6 +9,8 @@ use App\Models\MovimientoInventario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Caja;
+use App\Services\CajaService;
 
 class IngresoInsumoController extends Controller
 {
@@ -70,9 +72,13 @@ class IngresoInsumoController extends Controller
             ->orderBy('nombre')
             ->get();
 
+        $cajas = Caja::where('estado', true)
+            ->orderBy('id')
+            ->get();
+
         return view(
             'insumos.ingresos.create',
-            compact('insumos')
+            compact('insumos', 'cajas')
         );
     }
 
@@ -96,6 +102,12 @@ class IngresoInsumoController extends Controller
                 'nullable',
                 'string',
                 'max:255'
+            ],
+
+            'caja_id' => [
+                'required',
+                'integer',
+                'exists:cajas,id',
             ],
 
             'observacion' => [
@@ -169,6 +181,8 @@ class IngresoInsumoController extends Controller
 
             DB::transaction(function () use ($request) {
 
+                $cajaService = app(CajaService::class);
+
                 /*
                 |--------------------------------------------------------------------------
                 | CALCULAR TOTAL
@@ -224,6 +238,8 @@ class IngresoInsumoController extends Controller
                     $total - $montoPagado;
 
 
+                // 5. Obtener caja
+                $caja = Caja::findOrFail($request->caja_id);
                 /*
                 |--------------------------------------------------------------------------
                 | GENERAR CÓDIGO
@@ -284,6 +300,20 @@ class IngresoInsumoController extends Controller
                     ]);
 
 
+
+                if ($montoPagado > 0) {
+
+                    $cajaService->egresar(
+                        $caja,
+                        $montoPagado,
+                        'Compra de insumos',
+                        'IngresoInsumo',
+                        $ingreso->id,
+                        'Egreso por compra de insumos - ' . $codigo
+                    );
+
+                }
+
                 /*
                 |--------------------------------------------------------------------------
                 | DETALLES Y STOCK
@@ -305,7 +335,7 @@ class IngresoInsumoController extends Controller
                     $precioCompra =
                         (float) $producto['precio_compra'];
 
-                        $precioVenta =
+                    $precioVenta =
                         (float) $producto['precio_venta'];
 
                     $subtotal =
@@ -457,5 +487,5 @@ class IngresoInsumoController extends Controller
         );
     }
 
-    
+
 }

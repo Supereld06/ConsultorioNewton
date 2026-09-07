@@ -1,304 +1,437 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html>
 
 <head>
 
-    
     <meta charset="utf-8">
 
     <title>{{ $salida->codigo }}</title>
 
     <style>
         @page {
-            margin: 20px;
+            margin: 15px;
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            font-size: 11px;
+            font-family: Arial, sans-serif;
+            font-size: 10px;
             color: #2c3e50;
+            margin: 0;
             background: #ffffff;
         }
 
-        .header {
-            text-align: center;
-            border-bottom: 3px solid #0a2540;
-            padding-bottom: 12px;
-            margin-bottom: 18px;
-        }
-
-        .logo {
-            width: 100px;
-            margin-bottom: 5px;
-        }
-
-        .header h2 {
-            margin: 5px 0;
-            font-size: 18px;
-            color: #0a2540;
-            letter-spacing: 1px;
-        }
-
-        .header p {
-            margin: 4px 0;
-            color: #4a5a6a;
-        }
-
-        .info {
-            margin-bottom: 15px;
-            padding: 10px;
-            background: #f4f7fb;
-            border-left: 4px solid #0a2540;
-        }
-
-        .info strong {
-            display: inline-block;
-            width: 130px;
-            color: #0a2540;
-        }
-
-        .section {
-            margin-top: 12px;
-            padding: 12px;
-            border-radius: 8px;
-            background: #ffffff;
-            border: 1px solid #dce3ec;
-        }
-
-        .section-title {
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #0a2540;
-            font-size: 13px;
-            letter-spacing: 1px;
-        }
-
-        table {
+        .documento {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 8px;
         }
 
-        th {
-            background: #0a2540;
-            color: white;
-            padding: 8px;
-            text-align: left;
-        }
 
-        td {
-            border-bottom: 1px solid #dce3ec;
-            padding: 7px;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        .totales {
-            margin-top: 15px;
-            width: 45%;
-            margin-left: auto;
-        }
-
-        .totales table td {
-            border: none;
-            padding: 5px;
-        }
-
-        .total-final {
-            font-size: 15px;
-            font-weight: bold;
-            color: #0a2540;
-            border-top: 2px solid #0a2540 !important;
-        }
-
-        .firma {
-            margin-top: 55px;
-            text-align: center;
-        }
-
-        .linea {
-            border-top: 1.5px solid #0a2540;
-            width: 220px;
-            margin: auto;
-        }
-
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 9px;
-            color: #4a5a6a;
-        }
-
-        .footer hr {
-            border: none;
-            border-top: 1px solid #0a2540;
-            opacity: 0.4;
-        }
+        /* ==========================================
+           MARCA DE AGUA
+           ========================================== */
 
         .watermark {
             position: fixed;
-            top: 40%;
+            top: 42%;
             left: 50%;
             transform: translate(-50%, -50%);
             opacity: 0.04;
         }
 
         .watermark img {
-            width: 340px;
+            width: 300px;
+        }
+
+
+        /* ==========================================
+           ENCABEZADO
+           ========================================== */
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #0a2540;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .logo {
+            width: 85px;
+            margin-bottom: 3px;
+        }
+
+        .consultorio {
+            font-size: 11px;
+            font-weight: bold;
+            color: #0a2540;
+            margin: 2px 0;
+        }
+
+        .header h2 {
+            margin: 5px 0 2px;
+            font-size: 17px;
+            color: #0a2540;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            margin: 2px 0;
+            color: #4a5a6a;
+            font-size: 8px;
+        }
+
+
+        /* ==========================================
+           INFORMACIÓN
+           ========================================== */
+
+        .info {
+            margin-bottom: 12px;
+            padding: 8px;
+            background: #f4f7fb;
+            border-left: 4px solid #0a2540;
+        }
+
+        .info strong {
+            display: inline-block;
+            width: 75px;
+            color: #0a2540;
+        }
+
+
+        /* ==========================================
+           SECCIÓN
+           ========================================== */
+
+        .section {
+            margin-top: 12px;
+            padding: 8px;
+            border: 1px solid #dce3ec;
+            background: #ffffff;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #0a2540;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+
+        /* ==========================================
+           TABLA
+           ========================================== */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #0a2540;
+            color: white;
+            border: 1px solid #0a2540;
+            padding: 6px 5px;
+            text-align: left;
+            font-size: 9px;
+        }
+
+        td {
+            border-bottom: 1px solid #dce3ec;
+            padding: 6px 5px;
+            font-size: 9px;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+
+        /* ==========================================
+           TOTALES
+           ========================================== */
+
+        .totales {
+            margin-top: 12px;
+            width: 48%;
+            margin-left: auto;
+        }
+
+        .totales td {
+            border: none;
+            padding: 4px;
+            font-size: 9px;
+        }
+
+        .total-final {
+            border-top: 2px solid #0a2540 !important;
+            font-size: 13px !important;
+            font-weight: bold;
+            color: #0a2540;
+        }
+
+
+        /* ==========================================
+           OBSERVACIÓN
+           ========================================== */
+
+        .observacion {
+            margin-top: 12px;
+            padding: 8px;
+            background: #f4f7fb;
+            border-left: 4px solid #0a2540;
+            font-size: 9px;
+        }
+
+        .observacion-title {
+            font-weight: bold;
+            color: #0a2540;
+            margin-bottom: 5px;
+        }
+
+
+        /* ==========================================
+           FIRMAS
+           ========================================== */
+
+        .firmas {
+            width: 100%;
+            margin-top: 45px;
+        }
+
+        .firma {
+            width: 44%;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .espacio {
+            width: 9%;
+            display: inline-block;
+        }
+
+        .linea {
+            border-top: 1px solid #0a2540;
+            width: 150px;
+            margin: auto;
+        }
+
+        .firma-titulo {
+            margin-top: 4px;
+            font-weight: bold;
+            color: #0a2540;
+            font-size: 9px;
+        }
+
+        .firma-subtitulo {
+            margin-top: 2px;
+            font-size: 8px;
+            color: #4a5a6a;
+        }
+
+
+        /* ==========================================
+           FOOTER
+           ========================================== */
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 8px;
+            color: #4a5a6a;
+            border-top: 1px solid #0a2540;
+            padding-top: 6px;
+        }
+
+        .footer p {
+            margin: 2px 0;
         }
     </style>
-    
 
 </head>
 
+
 <body>
 
-    
-    {{-- MARCA DE AGUA --}}
-
-    <div class="watermark">
-
-        <img src="{{ public_path('img/logo.jpeg') }}">
-
-    </div>
+    <div class="documento">
 
 
-    {{-- ENCABEZADO --}}
+        {{-- ==========================================
+        MARCA DE AGUA
+        ========================================== --}}
 
-    <div class="header">
+        <div class="watermark">
 
-        <img src="{{ public_path('img/logo.jpeg') }}" class="logo">
+            <img src="{{ public_path('img/logo.jpeg') }}">
 
-        <h2>
-            SALIDA DE INSUMOS
-        </h2>
-
-        <p>
-            Documento de salida de insumos
-        </p>
-
-    </div>
-
-
-    {{-- INFORMACIÓN --}}
-
-    <div class="info">
-
-        <strong>N° de Salida:</strong>
-        {{ $salida->codigo }}
-
-        <br>
-
-        <strong>Fecha:</strong>
-        {{ $salida->fecha->format('d/m/Y') }}
-
-        <br>
-
-        <strong>Motivo:</strong>
-        {{ $salida->motivo ?: 'No especificado' }}
-
-        <br>
-
-        <strong>Usuario:</strong>
-        {{ $salida->usuario->name ?? 'N/A' }}
-
-    </div>
-
-
-    {{-- DETALLE --}}
-
-    <div class="section">
-
-        <div class="section-title">
-            DETALLE DE INSUMOS
         </div>
 
 
-        <table>
+        {{-- ==========================================
+        ENCABEZADO
+        ========================================== --}}
 
-            <thead>
+        <div class="header">
 
-                <tr>
+            <img src="{{ public_path('img/logo.jpeg') }}" class="logo">
 
-                    <th>#</th>
+            <h2>
+                SALIDA DE INSUMOS
+            </h2>
 
-                    <th>Código</th>
+            <p>
+                Documento de salida de insumos
+            </p>
 
-                    <th>Insumo</th>
-
-                    <th>Cantidad</th>
-
-                    <th>Precio Venta</th>
-
-                    <th>Total</th>
-
-                </tr>
-
-            </thead>
+        </div>
 
 
-            <tbody>
+        {{-- ==========================================
+        INFORMACIÓN
+        ========================================== --}}
 
-                @foreach($salida->detalles as $index => $detalle)
+        <div class="info">
+
+            <strong>
+                N° de Salida:
+            </strong>
+
+            {{ $salida->codigo }}
+
+            <br>
+
+            <strong>
+                Fecha:
+            </strong>
+
+            {{ $salida->fecha->format('d/m/Y') }}
+
+            <br>
+
+            <strong>
+                Motivo:
+            </strong>
+
+            {{ $salida->motivo ?: 'No especificado' }}
+
+            <br>
+
+            <strong>
+                Usuario:
+            </strong>
+
+            {{ $salida->usuario->name ?? 'N/A' }}
+
+        </div>
+
+
+        {{-- ==========================================
+        DETALLE
+        ========================================== --}}
+
+        <div class="section">
+
+            <div class="section-title">
+                DETALLE DE INSUMOS
+            </div>
+
+            <table>
+
+                <thead>
 
                     <tr>
 
-                        <td>
-                            {{ $index + 1 }}
-                        </td>
+                        <th class="center">
+                            #
+                        </th>
 
-                        <td>
-                            {{ $detalle->insumo->codigo ?? '-' }}
-                        </td>
+                        <th>
+                            Código
+                        </th>
 
-                        <td>
-                            {{ $detalle->insumo->nombre ?? '-' }}
-                        </td>
+                        <th>
+                            Insumo
+                        </th>
 
-                        <td>
-                            {{ number_format($detalle->cantidad, 2) }}
-                        </td>
+                        <th class="center">
+                            Cant.
+                        </th>
 
-                        <td>
-                            Bs.
-                            {{ number_format($detalle->precio_venta, 2) }}
-                        </td>
+                        <th class="right">
+                            P. Venta
+                        </th>
 
-                        <td>
-                            Bs.
-                            {{ number_format($detalle->subtotal, 2) }}
-                        </td>
+                        <th class="right">
+                            Subtotal
+                        </th>
 
                     </tr>
 
-                @endforeach
-
-            </tbody>
-
-        </table>
-
-    </div>
+                </thead>
 
 
-    {{-- TOTALES --}}
+                <tbody>
 
-    <div class="totales">
+                    @foreach($salida->detalles as $index => $detalle)
 
-        <table>
+                        <tr>
+
+                            <td class="center">
+                                {{ $index + 1 }}
+                            </td>
+
+                            <td>
+                                {{ $detalle->insumo->codigo ?? '-' }}
+                            </td>
+
+                            <td>
+                                {{ $detalle->insumo->nombre ?? '-' }}
+                            </td>
+
+                            <td class="center">
+                                {{ number_format($detalle->cantidad, 2) }}
+                            </td>
+
+                            <td class="right">
+                                Bs.
+                                {{ number_format($detalle->precio_venta, 2) }}
+                            </td>
+
+                            <td class="right">
+                                Bs.
+                                {{ number_format($detalle->subtotal, 2) }}
+                            </td>
+
+                        </tr>
+
+                    @endforeach
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {{-- ==========================================
+        TOTALES
+        ========================================== --}}
+
+        <table class="totales">
 
             <tr>
 
                 <td>
-                    <strong>Total:</strong>
+                    <strong>
+                        Total:
+                    </strong>
                 </td>
 
-                <td class="text-right">
+                <td class="right">
                     Bs.
                     {{ number_format($salida->total, 2) }}
                 </td>
@@ -309,10 +442,12 @@
             <tr>
 
                 <td>
-                    <strong>Monto pagado:</strong>
+                    <strong>
+                        Monto pagado:
+                    </strong>
                 </td>
 
-                <td class="text-right">
+                <td class="right">
                     Bs.
                     {{ number_format($salida->monto_pagado, 2) }}
                 </td>
@@ -326,72 +461,106 @@
                     SALDO PENDIENTE:
                 </td>
 
-                <td class="text-right total-final">
-
+                <td class="right total-final">
                     Bs.
                     {{ number_format($salida->saldo_pendiente, 2) }}
-
                 </td>
 
             </tr>
 
         </table>
 
-    </div>
 
+        {{-- ==========================================
+        OBSERVACIÓN
+        ========================================== --}}
 
-    {{-- OBSERVACIÓN --}}
+        @if($salida->observacion)
 
-    @if($salida->observacion)
+            <div class="observacion">
 
-        <div class="section">
+                <div class="observacion-title">
+                    OBSERVACIÓN
+                </div>
 
-            <div class="section-title">
-                OBSERVACIÓN
+                <div>
+                    {{ $salida->observacion }}
+                </div>
+
             </div>
 
+        @endif
+
+
+        {{-- ==========================================
+        FIRMAS
+        ========================================== --}}
+
+        <div class="firmas">
+
+            <div class="firma">
+
+                <div class="linea"></div>
+
+                <div class="firma-titulo">
+                    Entregado por
+                </div>
+
+                <div class="firma-subtitulo">
+                    Responsable de la entrega
+                </div>
+
+            </div>
+
+
+            <div class="espacio">
+                &nbsp;
+            </div>
+
+
+            <div class="firma">
+
+                <div class="linea"></div>
+
+                <div class="firma-titulo">
+                    Recibido por
+                </div>
+
+                <div class="firma-subtitulo">
+                    Responsable de la recepción
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- ==========================================
+        FOOTER
+        ========================================== --}}
+
+        <div class="footer">
+
             <p>
-                {{ $salida->observacion }}
+                Dirección: M. Ricardo Terrazas #1067 entre Benjamín Blanco y Medizabal
+            </p>
+
+            <p>
+                Teléfono: 68574372
+            </p>
+
+            <p>
+                TikTok: @consultorio_mediconewton
+            </p>
+
+            <p>
+                Gracias por su preferencia
             </p>
 
         </div>
 
-    @endif
-
-
-    {{-- FIRMA --}}
-
-    <div class="firma">
-
-        <div class="linea"></div>
-
-        <div>
-            Responsable
-        </div>
 
     </div>
-
-
-    {{-- FOOTER --}}
-
-    <div class="footer">
-
-        <hr>
-
-        <p>
-            Dirección: M. Ricardo Terrazas #1067 entre Benjamín Blanco y Medizabal
-        </p>
-
-        <p>
-            Teléfono: 68574372
-        </p>
-
-        <p>
-            TikTok: consultorio_mediconewton
-        </p>
-
-    </div>
-    
 
 </body>
 

@@ -26,17 +26,17 @@
                 <div class="col-md-4 mb-3">
                     <label>Fecha nacimiento</label>
                     <input type="date" name="fecha_nacimiento" class="form-control"
-                        value="{{ $patient->fecha_nacimiento }}">
+                        value="{{ $patient->fecha_nacimiento }}" required>
                 </div>
 
                 <div class="col-md-4 mb-3">
                     <label>Carnet identidad</label>
-                    <input type="text" name="ci" class="form-control" value="{{ $patient->ci }}">
+                    <input type="text" name="ci" class="form-control" value="{{ $patient->ci }}" required>
                 </div>
 
                 <div class="col-md-4 mb-3">
                     <label>Teléfono</label>
-                    <input type="text" name="telefono" class="form-control" value="{{ $patient->telefono }}">
+                    <input type="text" name="telefono" class="form-control" value="{{ $patient->telefono }}" required>
                 </div>
 
                 <div class="col-md-6 mb-3">

@@ -12,34 +12,51 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class DoctorController extends Controller
 {
 
-public function index(Request $request)
-{
-    $search = $request->search;
+    public function index(Request $request)
+    {
+        $search = $request->search;
 
-    $doctors = Doctor::withCount([
-        'medicalPayments as pending_payments' => function ($query) {
-            $query->where('paid', 0); // 🔥 pagos pendientes
-        }
-    ])
-    ->when($search, function ($query) use ($search) {
-        $query->where(function ($q) use ($search) {
-            $q->where('nombres', 'like', "%$search%")
-              ->orWhere('apellidos', 'like', "%$search%")
-              ->orWhere('ci', 'like', "%$search%");
-        });
-    })
-    ->paginate(10);
+        $doctors = Doctor::withCount([
+            'medicalPayments as pending_payments' => function ($query) {
+                $query->where('paid', 0);
+            }
+        ])
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('nombres', 'like', "%$search%")
+                        ->orWhere('apellidos', 'like', "%$search%")
+                        ->orWhere('ci', 'like', "%$search%");
+                });
+            })
+            ->paginate(10);
 
-    return view('doctors.index', compact('doctors', 'search'));
-}
+        return view('doctors.index', compact('doctors', 'search'));
+    }
 
     public function create()
     {
         return view('doctors.create');
     }
 
+
     public function store(Request $request)
     {
+        $request->validate([
+            'apellidos' => 'required|string|max:255',
+            'nombres' => 'required|string|max:255',
+            'ci' => 'required|string|max:255|unique:doctors,ci',
+            'especialidad' => 'required|string|max:255',
+            'telefono' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ], [
+            'ci.required' => 'El CI es obligatorio.',
+            'ci.unique' => 'Este CI ya está registrado para otro doctor.',
+            'email.email' => 'Ingrese un correo electrónico válido.',
+            'foto.image' => 'El archivo debe ser una imagen.',
+            'foto.mimes' => 'La fotografía debe ser JPG, JPEG o PNG.',
+            'foto.max' => 'La fotografía no debe superar los 2 MB.',
+        ]);
 
         $data = $request->all();
 
@@ -49,8 +66,12 @@ public function index(Request $request)
 
         Doctor::create($data);
 
-        return redirect()->route('doctors.index');
+        return redirect()
+            ->route('doctors.index')
+            ->with('success', 'Doctor registrado correctamente.');
     }
+
+
 
     public function edit($id)
     {
@@ -206,14 +227,14 @@ public function index(Request $request)
 
 
 
-public function receiptPdf($number)
-{
-    $details = MedicalReceipt::with(['patient', 'doctor'])
-        ->where('receipt_number', $number)
-        ->get();
+    public function receiptPdf($number)
+    {
+        $details = MedicalReceipt::with(['patient', 'doctor'])
+            ->where('receipt_number', $number)
+            ->get();
 
-    $pdf = Pdf::loadView('reports.medical_receipt_pdf', compact('details'));
+        $pdf = Pdf::loadView('reports.medical_receipt_pdf', compact('details'));
 
-    return $pdf->stream('recibo.pdf'); // 🔥 abre en nueva pestaña
-}
+        return $pdf->stream('recibo.pdf'); // 🔥 abre en nueva pestaña
+    }
 }

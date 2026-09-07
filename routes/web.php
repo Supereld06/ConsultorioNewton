@@ -18,6 +18,7 @@ use App\Http\Controllers\InsumoAgrupadoController;
 use App\Http\Controllers\CuracionController;
 use App\Http\Controllers\CuracionRecetaController;
 use App\Http\Controllers\EstudioComplementarioController;
+use App\Http\Controllers\CajaController;
 
 
 Route::get('/', function () {
@@ -250,6 +251,20 @@ Route::middleware('auth')->group(function () {
     // PDF RECIBO LABORATORIO
     Route::get('/estudios/{id}/pdf-laboratorio', [EstudioComplementarioController::class, 'pdfLaboratorio'])
         ->name('estudios.pdf.laboratorio');
+
+
+    Route::get('/cajas', [CajaController::class, 'index'])
+        ->name('cajas.index');
+
+    Route::get('/cajas/transferencia', [CajaController::class, 'formularioTransferencia'])
+        ->name('cajas.transferencia');
+
+    Route::post('/cajas/transferencia', [CajaController::class, 'transferir'])
+        ->name('cajas.transferencia.store');
+
+    Route::get('/cajas/{id}/movimientos', [CajaController::class, 'movimientos'])
+        ->name('cajas.movimientos');
+
 
 });
 
