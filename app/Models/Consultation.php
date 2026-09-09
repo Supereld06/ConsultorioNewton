@@ -28,9 +28,12 @@ class Consultation extends Model
         return $this->hasMany(Supply::class);
     }
 
-    public function medicalPayments()
+    public function pagoMedico()
     {
-        return $this->hasMany(MedicalPayment::class);
+        return $this->hasOne(
+            PagoMedico::class,
+            'consultation_id'
+        );
     }
 
     // Una consulta puede tener una curación

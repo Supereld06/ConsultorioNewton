@@ -51,57 +51,119 @@
                             @endphp
 
                             <tr>
-                                <td>{{ $a->patient->nombres }}</td>
-                                <td>{{ $a->doctor->nombres }}</td>
+                                <td>{{ $a->patient->nombres }} {{ $a->patient->apellidos }}</td>
+
+                                <td>{{ $a->doctor->nombres }} {{ $a->doctor->apellidos }}</td>
+
                                 <td>{{ $a->fecha }}</td>
+
                                 <td>{{ $a->hora }}</td>
 
+                                {{-- ESTADO --}}
                                 <td>
                                     @if(!$consulta)
-                                        <span class="badge bg-secondary">Sin atención</span>
+
+                                        <span class="badge bg-secondary">
+                                            Sin atención
+                                        </span>
+
                                     @elseif(!$consulta->atendido)
-                                        <span class="badge bg-warning text-dark">En proceso</span>
+
+                                        <span class="badge bg-warning text-dark">
+                                            En proceso
+                                        </span>
+
                                     @else
-                                        <span class="badge bg-success">Atendido</span>
+
+                                        <span class="badge bg-success">
+                                            Atendido
+                                        </span>
+
                                     @endif
                                 </td>
 
+                                {{-- ACCIONES --}}
                                 <td>
 
-                                    <!-- ATENDER -->
+                                    {{-- ATENDER --}}
                                     <a href="{{ route('consultations.atender', $a->id) }}" class="btn btn-success btn-sm">
+
                                         🩺 ATENDER
+
                                     </a>
 
-                                    @if($consulta && $consulta->atendido)
-                                        <a href="{{ route('medical_payments.index', $consulta->id) }}" class="btn btn-dark btn-sm">
-                                            💰 PAGO MEDICO
-                                        </a>
-                                    @endif
-
-                                    <!-- PDF -->
 
                                     @if($consulta && $consulta->atendido)
+
+                                        {{-- ============================== --}}
+                                        {{-- PAGO MÉDICO --}}
+                                        {{-- ============================== --}}
+
+                                        @if($consulta->pagoMedico)
+
+                                                            {{-- YA TIENE PAGO --}}
+                                                            <a href="{{ route(
+                                                'pagos_medicos.show',
+                                                $consulta->pagoMedico->id
+                                            ) }}" class="btn btn-success btn-sm">
+
+                                                                💰 Pago registrado
+
+                                                            </a>
+
+                                        @else
+
+                                                            {{-- TODAVÍA NO TIENE PAGO --}}
+                                                            <a href="{{ route(
+                                                'pagos_medicos.create',
+                                                $consulta->id
+                                            ) }}" class="btn btn-dark btn-sm">
+
+                                                                💰 PAGO MÉDICO
+
+                                                            </a>
+
+                                        @endif
+
+
+                                        {{-- ============================== --}}
+                                        {{-- INSUMOS --}}
+                                        {{-- ============================== --}}
+
                                         <a href="{{ route('supplies.index', $consulta->id) }}" class="btn btn-warning btn-sm">
-                                            🧪 INSUMOS
-                                        </a>
-                                    @endif
 
-                                    @if($consulta && $consulta->atendido)
+                                            🧪 INSUMOS
+
+                                        </a>
+
+
+                                        {{-- ============================== --}}
+                                        {{-- IMPRIMIR RECETA --}}
+                                        {{-- ============================== --}}
+
                                         <a href="{{ route('consultations.pdf', $consulta->id) }}" class="btn btn-info btn-sm"
                                             target="_blank">
-                                            📄 IMPRIMIR RECETA
-                                        </a>
-                                    @endif
 
-                                    @if($consulta && $consulta->atendido)
+                                            📄 IMPRIMIR RECETA
+
+                                        </a>
+
+
+                                        {{-- ============================== --}}
+                                        {{-- IMPRIMIR RECIBO --}}
+                                        {{-- ============================== --}}
+
                                         <a href="{{ route('consultations.receipt', $consulta->id) }}" class="btn btn-dark btn-sm"
                                             target="_blank">
+
                                             🧾 IMPRIMIR RECIBO
+
                                         </a>
+
                                     @endif
 
                                 </td>
+
                             </tr>
 
                         @endforeach

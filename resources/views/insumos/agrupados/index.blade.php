@@ -88,7 +88,6 @@
 
         @endif
 
-
         {{-- =====================================================
         BUSCADOR
         ====================================================== --}}
@@ -99,9 +98,9 @@
 
                 <form method="GET" action="{{ route('insumos.agrupados.index') }}">
 
-                    <div class="row">
+                    <div class="row g-2">
 
-                        <div class="col-md-10">
+                        <div class="col-md-8">
 
                             <input type="text" name="buscar" class="form-control"
                                 placeholder="Buscar por código o nombre del combo..." value="{{ $buscar }}">
@@ -110,12 +109,23 @@
 
                         <div class="col-md-2">
 
-                            <button class="btn btn-primary w-100">
+                            <button type="submit" class="btn btn-primary w-100">
 
                                 <i class="bi bi-search"></i>
                                 Buscar
 
                             </button>
+
+                        </div>
+
+                        <div class="col-md-2">
+
+                            <a href="{{ route('insumos.agrupados.index') }}" class="btn btn-secondary w-100">
+
+                                <i class="bi bi-x-circle"></i>
+                                Limpiar
+
+                            </a>
 
                         </div>
 
@@ -126,7 +136,6 @@
             </div>
 
         </div>
-
 
         {{-- =====================================================
         TABLA
@@ -239,7 +248,7 @@
                                                                             {{ $detalle->insumo
                                                     ? $detalle->insumo->nombre
                                                     : $detalle->nombre_otro
-                                                                                        }}
+                                                                                                                            }}
 
                                                                             @if($detalle->insumo)
 

@@ -143,7 +143,7 @@
                             </label>
 
                             <textarea name="descripcion" class="form-control" rows="2"
-                                placeholder="Descripción del combo..." required>{{ old('descripcion') }}</textarea>
+                                placeholder="Descripción del combo...">{{ old('descripcion') }}</textarea>
 
                         </div>
 
@@ -313,7 +313,6 @@
     {{-- =====================================================
     JAVASCRIPT
     ====================================================== --}}
-
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -322,6 +321,50 @@
 
             const container = document.getElementById('detallesContainer');
             const btnAgregar = document.getElementById('btnAgregar');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | INICIALIZAR SELECT2
+            |--------------------------------------------------------------------------
+            */
+
+            function inicializarSelectInsumo(elemento) {
+
+                $(elemento).select2({
+
+                    placeholder: '-- Seleccionar insumo --',
+
+                    allowClear: true,
+
+                    width: '100%',
+
+                    language: {
+
+                        noResults: function () {
+                            return 'No se encontró ningún insumo';
+                        },
+
+                        searching: function () {
+                            return 'Buscando...';
+                        }
+
+                    }
+
+                });
+
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | INICIALIZAR SELECT EXISTENTE
+            |--------------------------------------------------------------------------
+            */
+
+            inicializarSelectInsumo(
+                document.querySelector('.select-insumo')
+            );
 
 
             /*
@@ -342,9 +385,12 @@
                     'mb-3'
                 );
 
+
                 fila.innerHTML = `
 
                 <div class="row g-2 align-items-end">
+
+                    {{-- INSUMO EXISTENTE --}}
 
                     <div class="col-md-5">
 
@@ -352,8 +398,10 @@
                             Insumo / Medicamento
                         </label>
 
-                        <select name="detalles[${contador}][insumo_id]"
-                                class="form-select select-insumo">
+                        <select
+                            name="detalles[${contador}][insumo_id]"
+                            class="form-select select-insumo"
+                        >
 
                             <option value="">
                                 -- Seleccionar insumo --
@@ -373,19 +421,25 @@
                     </div>
 
 
+                    {{-- OTRO --}}
+
                     <div class="col-md-4">
 
                         <label class="form-label">
                             Otro
                         </label>
 
-                        <input type="text"
-                               name="detalles[${contador}][nombre_otro]"
-                               class="form-control input-otro"
-                               placeholder="Escribir otro elemento">
+                        <input
+                            type="text"
+                            name="detalles[${contador}][nombre_otro]"
+                            class="form-control input-otro"
+                            placeholder="Escribir otro elemento"
+                        >
 
                     </div>
 
+
+                    {{-- CANTIDAD --}}
 
                     <div class="col-md-2">
 
@@ -393,22 +447,28 @@
                             Cantidad *
                         </label>
 
-                        <input type="number"
-                               name="detalles[${contador}][cantidad]"
-                               class="form-control"
-                               step="0.01"
-                               min="0.01"
-                               value="1"
-                               required>
+                        <input
+                            type="number"
+                            name="detalles[${contador}][cantidad]"
+                            class="form-control"
+                            step="0.01"
+                            min="0.01"
+                            value="1"
+                            required
+                        >
 
                     </div>
 
 
+                    {{-- ELIMINAR --}}
+
                     <div class="col-md-1">
 
-                        <button type="button"
-                                class="btn btn-danger btn-eliminar w-100"
-                                title="Eliminar">
+                        <button
+                            type="button"
+                            class="btn btn-danger btn-eliminar w-100"
+                            title="Eliminar"
+                        >
 
                             <i class="bi bi-trash"></i>
 
@@ -418,6 +478,7 @@
 
                 </div>
 
+
                 <div class="form-text mt-2">
 
                     Seleccione un insumo existente
@@ -425,9 +486,23 @@
                     escriba manualmente un elemento en "Otro".
 
                 </div>
+
             `;
 
+
                 container.appendChild(fila);
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | INICIALIZAR SELECT2 EN LA NUEVA FILA
+                |--------------------------------------------------------------------------
+                */
+
+                inicializarSelectInsumo(
+                    fila.querySelector('.select-insumo')
+                );
+
 
                 contador++;
 
@@ -448,16 +523,38 @@
                     return;
                 }
 
+
                 const filas = container.querySelectorAll('.detalle-row');
+
 
                 if (filas.length <= 1) {
 
                     alert('El combo debe tener al menos un elemento.');
 
                     return;
+
                 }
 
-                boton.closest('.detalle-row').remove();
+
+                const fila = boton.closest('.detalle-row');
+
+                const select = fila.querySelector('.select-insumo');
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | DESTRUIR SELECT2 ANTES DE ELIMINAR
+                |--------------------------------------------------------------------------
+                */
+
+                if ($(select).hasClass('select2-hidden-accessible')) {
+
+                    $(select).select2('destroy');
+
+                }
+
+
+                fila.remove();
 
             });
 
@@ -474,13 +571,16 @@
                     return;
                 }
 
+
                 const fila = event.target.closest('.detalle-row');
 
                 const otro = fila.querySelector('.input-otro');
 
+
                 if (event.target.value !== '') {
 
                     otro.value = '';
+
                     otro.disabled = true;
 
                 } else {
@@ -492,24 +592,47 @@
             });
 
 
+            /*
+            |--------------------------------------------------------------------------
+            | CUANDO ESCRIBE EN "OTRO"
+            |--------------------------------------------------------------------------
+            */
+
             container.addEventListener('input', function (event) {
 
                 if (!event.target.classList.contains('input-otro')) {
                     return;
                 }
 
+
                 const fila = event.target.closest('.detalle-row');
 
                 const select = fila.querySelector('.select-insumo');
 
+
                 if (event.target.value.trim() !== '') {
 
-                    select.value = '';
-                    select.disabled = true;
+                    /*
+                    | Limpiar el insumo seleccionado
+                    */
+
+                    $(select).val(null).trigger('change');
+
+
+                    /*
+                    | Deshabilitar Select2
+                    */
+
+                    $(select).prop('disabled', true);
+
 
                 } else {
 
-                    select.disabled = false;
+                    /*
+                    | Habilitar Select2 nuevamente
+                    */
+
+                    $(select).prop('disabled', false);
 
                 }
 
@@ -518,5 +641,6 @@
         });
 
     </script>
+
 
 @endsection

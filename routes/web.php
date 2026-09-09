@@ -8,7 +8,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\SupplyController;
-use App\Http\Controllers\MedicalPaymentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InsumoController;
 use App\Http\Controllers\IngresoInsumoController;
@@ -19,6 +18,8 @@ use App\Http\Controllers\CuracionController;
 use App\Http\Controllers\CuracionRecetaController;
 use App\Http\Controllers\EstudioComplementarioController;
 use App\Http\Controllers\CajaController;
+use App\Http\Controllers\PagoMedicoController;
+use App\Http\Controllers\LiquidacionMedicoController;
 
 
 Route::get('/', function () {
@@ -61,9 +62,6 @@ Route::get('/consultations/{id}', function ($id) {
 
 Route::get('/supplies/{id}', [SupplyController::class, 'index'])->name('supplies.index');
 Route::post('/supplies', [SupplyController::class, 'store'])->name('supplies.store');
-
-Route::get('/medical-payments/{id}', [MedicalPaymentController::class, 'index'])->name('medical_payments.index');
-Route::post('/medical-payments', [MedicalPaymentController::class, 'store'])->name('medical_payments.store');
 
 Route::get('/consultations/{id}/receipt', [ConsultationController::class, 'receipt'])
     ->name('consultations.receipt');
@@ -264,6 +262,46 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/cajas/{id}/movimientos', [CajaController::class, 'movimientos'])
         ->name('cajas.movimientos');
+
+    // PAGOS MÉDICOS
+    Route::get('/pagos-medicos/crear/{consultation_id}', [PagoMedicoController::class, 'create'])
+        ->name('pagos_medicos.create');
+
+    Route::post('/pagos-medicos', [PagoMedicoController::class, 'store'])
+        ->name('pagos_medicos.store');
+
+    Route::get('/pagos-medicos/{id}', [PagoMedicoController::class, 'show'])
+        ->name('pagos_medicos.show');
+
+    Route::get(
+        '/consultations/{id}/receipt',
+        [ConsultationController::class, 'receipt']
+    )->name('consultations.receipt');
+
+    Route::get(
+        '/liquidaciones-medicos',
+        [LiquidacionMedicoController::class, 'index']
+    )->name('liquidaciones_medicos.index');
+
+    Route::post(
+        '/liquidaciones-medicos/consultar',
+        [LiquidacionMedicoController::class, 'consultar']
+    )->name('liquidaciones_medicos.consultar');
+
+    Route::post(
+        '/liquidaciones-medicos',
+        [LiquidacionMedicoController::class, 'store']
+    )->name('liquidaciones_medicos.store');
+
+    Route::get(
+        '/liquidaciones-medicos/{id}',
+        [LiquidacionMedicoController::class, 'show']
+    )->name('liquidaciones_medicos.show');
+
+    Route::post(
+        '/liquidaciones-medicos/{id}/pagar',
+        [LiquidacionMedicoController::class, 'pagar']
+    )->name('liquidaciones_medicos.pagar');
 
 
 });

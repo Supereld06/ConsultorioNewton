@@ -84,15 +84,16 @@
 
                         </div>
 
-                        <div class="col-md-2">
-
+                        <div class="col-md-2 d-flex gap-2">
                             <button type="submit" class="btn btn-primary w-100">
-
                                 <i class="bi bi-search"></i>
                                 Buscar
-
                             </button>
 
+                            <a href="{{ route('insumos.ingresos.index') }}" class="btn btn-secondary w-100">
+                                <i class="bi bi-x-circle"></i>
+                                Limpiar
+                            </a>
                         </div>
 
                     </div>

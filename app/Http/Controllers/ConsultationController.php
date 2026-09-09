@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-// ✅ IMPORTACIONES CORRECTAS
 use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Consultation;
@@ -32,8 +30,6 @@ class ConsultationController extends Controller
     {
         $appointment = Appointment::with('patient', 'doctor', 'consultation')
             ->findOrFail($id);
-
-        // 🔥 crear si no existe
         $consultation = Consultation::firstOrCreate([
             'appointment_id' => $appointment->id
         ]);
@@ -44,10 +40,6 @@ class ConsultationController extends Controller
     public function update(Request $request, $id)
     {
         $consultation = Consultation::findOrFail($id);
-
-        $request->validate([
-            'diagnostico' => 'required'
-        ]);
 
         $consultation->update([
             'motivo_consulta' => $request->motivo_consulta,
@@ -64,47 +56,50 @@ class ConsultationController extends Controller
             ->with('success', 'Consulta atendida correctamente');
     }
 
-    // ✅ PDF CORREGIDO
     public function pdf($id)
     {
         $consultation = Consultation::with('appointment.patient', 'appointment.doctor')
             ->findOrFail($id);
 
         $pdf = Pdf::loadView('consultations.pdf', compact('consultation'))
-            ->setPaper([0, 0, 340, 520]); // 📄 Media carta
+            ->setPaper([0, 0, 340, 520]);
 
-        return $pdf->stream('consulta.pdf'); // 👈 abre en pestaña
+        return $pdf->stream('consulta.pdf');
     }
 
-    // ✅ NUEVO MÉTODO PARA RECIBO
     public function receipt($id)
     {
         $consultation = Consultation::with([
             'appointment.patient',
             'appointment.doctor',
-            'supplies',
-            'medicalPayments'
+            'pagoMedico'
         ])->findOrFail($id);
 
-        // 🔥 AQUÍ VA
+        // Verificar que exista un pago médico
+        if (!$consultation->pagoMedico) {
+            return redirect()
+                ->back()
+                ->with('error', 'Esta consulta todavía no tiene un pago médico registrado.');
+        }
+
+        // Generar número de recibo si todavía no existe
         if (!$consultation->receipt_number) {
-            $consultation->receipt_number = 'REC-' . str_pad($consultation->id, 6, '0', STR_PAD_LEFT);
+
+            $consultation->receipt_number =
+                'REC-' . str_pad($consultation->id, 6, '0', STR_PAD_LEFT);
+
             $consultation->save();
         }
 
-        // 🔥 TOTALES
-        $totalSupplies = $consultation->supplies->sum('cost');
-        $totalMedical = $consultation->medicalPayments->sum('cost');
+        $pdf = Pdf::loadView('consultations.receipt', [
+            'consultation' => $consultation,
+            'pagoMedico' => $consultation->pagoMedico,
+        ]);
 
-        $issueDate = now()->format('d/m/Y H:i');
-
-        $pdf = Pdf::loadView('consultations.receipt', compact(
-            'consultation',
-            'totalSupplies',
-            'totalMedical',
-            'issueDate'
-        ))->setPaper([0, 0, 340, 482]);
-
-        return $pdf->stream('recibo.pdf');
+        return $pdf->stream(
+            'recibo-atencion-medica-' . $consultation->receipt_number . '.pdf'
+        );
     }
+
+
 }

@@ -61,7 +61,7 @@ class InsumoAgrupadoController extends Controller
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
             'precio' => 'required|numeric|min:0',
-            'detalles' => 'required|array|min:1',
+            'detalles' => 'nullable|array|min:1',
 
             'detalles.*.insumo_id' => 'nullable|exists:insumos,id',
             'detalles.*.nombre_otro' => 'nullable|string|max:255',
@@ -70,7 +70,7 @@ class InsumoAgrupadoController extends Controller
             'nombre.required' => 'El nombre del combo es obligatorio.',
             'precio.required' => 'El precio del combo es obligatorio.',
             'precio.numeric' => 'El precio debe ser numérico.',
-            'detalles.required' => 'Debe agregar al menos un elemento al combo.',
+            'detalles.nullable' => 'Debe agregar al menos un elemento al combo.',
             'detalles.min' => 'Debe agregar al menos un elemento al combo.',
             'detalles.*.cantidad.required' => 'La cantidad es obligatoria.',
             'detalles.*.cantidad.min' => 'La cantidad debe ser mayor a cero.',
@@ -187,7 +187,7 @@ class InsumoAgrupadoController extends Controller
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
             'precio' => 'required|numeric|min:0',
-            'detalles' => 'required|array|min:1',
+            'detalles' => 'nullable|array|min:1',
 
             'detalles.*.insumo_id' => 'nullable|exists:insumos,id',
             'detalles.*.nombre_otro' => 'nullable|string|max:255',

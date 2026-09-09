@@ -14,11 +14,7 @@ return new class extends Migration {
             $table->id();
 
             $table->foreignId('appointment_id')->constrained()->cascadeOnDelete();
-
-            // 🔥 CONTROL PRINCIPAL
             $table->boolean('atendido')->default(false);
-
-            // 🩺 DATOS MÉDICOS
             $table->text('motivo_consulta')->nullable();
             $table->text('cuadro_clinico')->nullable();
             $table->text('diagnostico')->nullable();

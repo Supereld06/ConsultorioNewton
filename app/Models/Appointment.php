@@ -31,4 +31,8 @@ class Appointment extends Model
     {
         return $this->hasOne(Consultation::class);
     }
+
+    protected $casts = [
+        'fecha' => 'date',
+    ];
 }
