@@ -17,13 +17,13 @@ class CajaSeeder extends Seeder
 
         Caja::create([
             'nombre' => 'Empresa',
-            'saldo' => 500,
+            'saldo' => 400,
             'estado' => true,
         ]);
 
         Caja::create([
             'nombre' => 'Otros',
-            'saldo' => 1200,
+            'saldo' => 400,
             'estado' => true,
         ]);
     }

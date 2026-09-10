@@ -161,19 +161,15 @@
                         <thead class="table-light">
 
                             <tr>
-
                                 <th>#</th>
-
+                                <th>Paciente</th>
                                 <th>Fecha</th>
-
+                                <th>Hora</th>
                                 <th>Origen</th>
-
                                 <th>Concepto</th>
-
                                 <th class="text-end">
                                     Monto
                                 </th>
-
                             </tr>
 
                         </thead>
@@ -184,14 +180,35 @@
 
                                 <tr>
 
+                                    {{-- NÚMERO --}}
                                     <td>
                                         {{ $loop->iteration }}
                                     </td>
 
+                                    {{-- PACIENTE --}}
                                     <td>
-                                        {{ $detalle->fecha?->format('d/m/Y') }}
+                                        <strong>
+                                            {{ $detalle->paciente_nombre }}
+                                        </strong>
                                     </td>
 
+                                    {{-- FECHA --}}
+                                    <td>
+                                        {{ $detalle->fecha_atencion?->format('d/m/Y') ?? '--' }}
+                                    </td>
+
+                                    {{-- HORA --}}
+                                    <td>
+                                        @if($detalle->hora_atencion)
+                                            {{ \Carbon\Carbon::parse($detalle->hora_atencion)->format('H:i') }}
+                                        @else
+                                            <span class="text-muted">
+                                                --
+                                            </span>
+                                        @endif
+                                    </td>
+
+                                    {{-- ORIGEN --}}
                                     <td>
 
                                         @if($detalle->tipo_origen === 'pago_medico')
@@ -210,10 +227,12 @@
 
                                     </td>
 
+                                    {{-- CONCEPTO --}}
                                     <td>
                                         {{ $detalle->concepto }}
                                     </td>
 
+                                    {{-- MONTO --}}
                                     <td class="text-end">
 
                                         <strong>
@@ -228,12 +247,11 @@
                             @empty
 
                                 <tr>
+                                    <td colspan="7" class="text-center text-muted p-4">
 
-                                    <td colspan="5" class="text-center text-muted p-4">
                                         No existen detalles.
 
                                     </td>
-
                                 </tr>
 
                             @endforelse
@@ -321,10 +339,12 @@
 
                     @endif
 
-                    <button type="button" class="btn btn-danger"
-                        onclick="alert('El PDF se implementará en el siguiente paso.');">
+                    <a href="{{ route('liquidaciones_medicos.pdf', $liquidacion->id) }}" target="_blank"
+                        class="btn btn-danger">
+
                         📄 PDF
-                    </button>
+
+                    </a>
 
                 </div>
 

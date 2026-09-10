@@ -227,11 +227,25 @@
 
                                 <td>
 
+                                    {{-- VER DETALLE --}}
                                     <a href="{{ route('liquidaciones_medicos.show', $liquidacion->id) }}"
                                         class="btn btn-primary btn-sm">
+
                                         🔍 Ver
+
                                     </a>
 
+
+                                    {{-- PDF --}}
+                                    <a href="{{ route('liquidaciones_medicos.pdf', $liquidacion->id) }}" target="_blank"
+                                        class="btn btn-danger btn-sm">
+
+                                        📄 PDF
+
+                                    </a>
+
+
+                                    {{-- PAGAR --}}
                                     @if($liquidacion->estado === 'pendiente')
 
                                         <form action="{{ route('liquidaciones_medicos.pagar', $liquidacion->id) }}" method="POST"
@@ -241,7 +255,9 @@
                                             @csrf
 
                                             <button type="submit" class="btn btn-success btn-sm">
+
                                                 💵 Pagar
+
                                             </button>
 
                                         </form>

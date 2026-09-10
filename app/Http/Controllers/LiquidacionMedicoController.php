@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
+use Barryvdh\DomPDF\Facade\pdf;
 
 class LiquidacionMedicoController extends Controller
 {
@@ -102,7 +103,6 @@ class LiquidacionMedicoController extends Controller
             'doctor',
         ])
             ->where('doctor_id', $doctorId)
-            ->where('concepto', 'medico')
             ->whereHas('pagoMedico', function ($query) use ($fechaDesde, $fechaHasta) {
                 $query->whereBetween(
                     'fecha_atencion',
@@ -121,7 +121,6 @@ class LiquidacionMedicoController extends Controller
             )
             ->orderBy('id')
             ->get();
-
         /*
         |--------------------------------------------------------------------------
         | CURACIONES
@@ -244,7 +243,6 @@ class LiquidacionMedicoController extends Controller
 
             $atenciones = PagoMedicoDistribucion::with('pagoMedico')
                 ->where('doctor_id', $doctorId)
-                ->where('concepto', 'medico')
                 ->whereHas('pagoMedico', function ($query) use ($fechaDesde, $fechaHasta) {
                     $query->whereBetween(
                         'fecha_atencion',
@@ -358,7 +356,7 @@ class LiquidacionMedicoController extends Controller
                     'liquidacion_medico_id' => $liquidacion->id,
                     'tipo_origen' => 'pago_medico',
                     'origen_id' => $atencion->id,
-                    'concepto' => 'Atención médica',
+                    'concepto' => 'Atención médica - Consulta #' . $atencion->pagoMedico->consultation_id,
                     'fecha' => $fecha,
                     'monto' => $atencion->monto,
                 ]);
@@ -416,9 +414,78 @@ class LiquidacionMedicoController extends Controller
     {
         $liquidacion = LiquidacionMedico::with([
             'doctor',
-            'usuario',
             'detalles',
         ])->findOrFail($id);
+
+        foreach ($liquidacion->detalles as $detalle) {
+
+            $detalle->paciente_nombre = 'Sin paciente';
+            $detalle->fecha_atencion = $detalle->fecha;
+            $detalle->hora_atencion = null;
+
+            if ($detalle->tipo_origen === 'pago_medico') {
+
+                $distribucion = \App\Models\PagoMedicoDistribucion::with([
+                    'pagoMedico.consultation.appointment.patient'
+                ])->find($detalle->origen_id);
+
+                if ($distribucion && $distribucion->pagoMedico) {
+
+                    $pago = $distribucion->pagoMedico;
+
+                    $detalle->fecha_atencion =
+                        $pago->fecha_atencion ?? $detalle->fecha;
+
+                    $detalle->hora_atencion =
+                        $pago->hora_atencion;
+
+                    $patient = optional(
+                        optional(
+                            optional($pago->consultation)->appointment
+                        )->patient
+                    );
+
+                    if ($patient) {
+                        $detalle->paciente_nombre =
+                            trim(
+                                ($patient->apellidos ?? '') .
+                                ' ' .
+                                ($patient->nombres ?? '')
+                            );
+                    }
+                }
+            } elseif ($detalle->tipo_origen === 'curacion') {
+
+                $distribucion = \App\Models\CuracionDistribucion::with([
+                    'curacion.consultation.appointment.patient'
+                ])->find($detalle->origen_id);
+
+                if ($distribucion && $distribucion->curacion) {
+
+                    $curacion = $distribucion->curacion;
+
+                    $detalle->fecha_atencion =
+                        $curacion->fecha ?? $detalle->fecha;
+
+                    $detalle->hora_atencion = null;
+
+                    $patient = optional(
+                        optional(
+                            optional($curacion->consultation)->appointment
+                        )->patient
+                    );
+
+                    if ($patient) {
+                        $detalle->paciente_nombre =
+                            trim(
+                                ($patient->apellidos ?? '') .
+                                ' ' .
+                                ($patient->nombres ?? '')
+                            );
+                    }
+                }
+            }
+        }
 
         return view(
             'liquidaciones_medicos.show',
@@ -563,7 +630,10 @@ class LiquidacionMedicoController extends Controller
 
                 'tipo' => 'egreso',
 
-                'concepto' => 'Pago de liquidación médica',
+                'concepto' => 'Pago de liquidación médica - '
+                    . $liquidacion->doctor->apellidos
+                    . ' '
+                    . $liquidacion->doctor->nombres,
 
                 'monto' => $monto,
 
@@ -637,5 +707,94 @@ class LiquidacionMedicoController extends Controller
                     'No fue posible realizar el pago de la liquidación.'
                 );
         }
+    }
+
+    public function pdf($id)
+    {
+        $liquidacion = LiquidacionMedico::with([
+            'doctor',
+            'detalles',
+        ])->findOrFail($id);
+
+        foreach ($liquidacion->detalles as $detalle) {
+
+            $detalle->paciente_nombre = 'Sin paciente';
+            $detalle->fecha_atencion = $detalle->fecha;
+            $detalle->hora_atencion = null;
+
+            if ($detalle->tipo_origen === 'pago_medico') {
+
+                $distribucion = PagoMedicoDistribucion::with([
+                    'pagoMedico.consultation.appointment.patient'
+                ])->find($detalle->origen_id);
+
+                if ($distribucion && $distribucion->pagoMedico) {
+
+                    $pago = $distribucion->pagoMedico;
+
+                    $detalle->fecha_atencion =
+                        $pago->fecha_atencion ?? $detalle->fecha;
+
+                    $detalle->hora_atencion =
+                        $pago->hora_atencion;
+
+                    $patient = optional(
+                        optional(
+                            optional($pago->consultation)->appointment
+                        )->patient
+                    );
+
+                    if ($patient) {
+                        $detalle->paciente_nombre =
+                            trim(
+                                ($patient->apellidos ?? '') .
+                                ' ' .
+                                ($patient->nombres ?? '')
+                            );
+                    }
+                }
+            } elseif ($detalle->tipo_origen === 'curacion') {
+
+                $distribucion = CuracionDistribucion::with([
+                    'curacion.consultation.appointment.patient'
+                ])->find($detalle->origen_id);
+
+                if ($distribucion && $distribucion->curacion) {
+
+                    $curacion = $distribucion->curacion;
+
+                    $detalle->fecha_atencion =
+                        $curacion->fecha ?? $detalle->fecha;
+
+                    $detalle->hora_atencion = null;
+
+                    $patient = optional(
+                        optional(
+                            optional($curacion->consultation)->appointment
+                        )->patient
+                    );
+
+                    if ($patient) {
+                        $detalle->paciente_nombre =
+                            trim(
+                                ($patient->apellidos ?? '') .
+                                ' ' .
+                                ($patient->nombres ?? '')
+                            );
+                    }
+                }
+            }
+        }
+
+        $pdf = Pdf::loadView(
+            'liquidaciones_medicos.pdf',
+            compact('liquidacion')
+        );
+
+        $pdf->setPaper('letter', 'portrait');
+
+        return $pdf->stream(
+            'liquidacion-' . $liquidacion->numero . '.pdf'
+        );
     }
 }

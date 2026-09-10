@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\PagoMedicoDistribucion;
+use App\Models\CuracionDistribucion;
 
 class LiquidacionMedicoDetalle extends Model
 {
@@ -31,30 +33,22 @@ class LiquidacionMedicoDetalle extends Model
     }
 
     /**
-     * Distribución de pago médico.
-     *
-     * Se utiliza cuando:
-     * tipo_origen = pago_medico
+     * Obtener la distribución que originó este detalle.
      */
-    public function pagoMedicoDistribucion()
+    public function getOrigenAttribute()
     {
-        return $this->belongsTo(
-            PagoMedicoDistribucion::class,
-            'origen_id'
-        );
-    }
+        if ($this->tipo_origen === 'pago_medico') {
+            return PagoMedicoDistribucion::with([
+                'pagoMedico.consultation.appointment.patient'
+            ])->find($this->origen_id);
+        }
 
-    /**
-     * Distribución de curación.
-     *
-     * Se utiliza cuando:
-     * tipo_origen = curacion
-     */
-    public function curacionDistribucion()
-    {
-        return $this->belongsTo(
-            CuracionDistribucion::class,
-            'origen_id'
-        );
+        if ($this->tipo_origen === 'curacion') {
+            return CuracionDistribucion::with([
+                'curacion.consultation.appointment.patient'
+            ])->find($this->origen_id);
+        }
+
+        return null;
     }
 }

@@ -23,11 +23,8 @@ return new class extends Migration {
                 ->constrained('cajas')
                 ->restrictOnDelete();
 
-            $table->enum('concepto', [
-                'medico',
-                'institucion',
-                'otros'
-            ]);
+            $table->string('concepto', 100);
+
 
             $table->decimal('porcentaje', 5, 2);
 

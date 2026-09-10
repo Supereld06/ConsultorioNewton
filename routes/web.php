@@ -303,6 +303,11 @@ Route::middleware('auth')->group(function () {
         [LiquidacionMedicoController::class, 'pagar']
     )->name('liquidaciones_medicos.pagar');
 
+    Route::get(
+        '/liquidaciones-medicos/{id}/pdf',
+        [LiquidacionMedicoController::class, 'pdf']
+    )->name('liquidaciones_medicos.pdf');
+
 
 });
 

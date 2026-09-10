@@ -275,7 +275,7 @@ class PagoMedicoController extends Controller
                     'pago_medico_id' => $pagoMedico->id,
                     'doctor_id' => $doctor->id,
                     'caja_id' => $cajaDoctores->id,
-                    'concepto' => 'medico',
+                    'concepto' => 'medico - Consulta #' . $consultation->id,
                     'porcentaje' => $porcentajeMedico,
                     'monto' => $montoMedico,
                 ]);
@@ -290,7 +290,7 @@ class PagoMedicoController extends Controller
                     'pago_medico_id' => $pagoMedico->id,
                     'doctor_id' => null,
                     'caja_id' => $cajaEmpresa->id,
-                    'concepto' => 'institucion',
+                    'concepto' => 'institucion - Consulta #' . $consultation->id,
                     'porcentaje' => $porcentajeInstitucion,
                     'monto' => $montoInstitucion,
                 ]);
@@ -305,7 +305,7 @@ class PagoMedicoController extends Controller
                     'pago_medico_id' => $pagoMedico->id,
                     'doctor_id' => null,
                     'caja_id' => $cajaOtros->id,
-                    'concepto' => 'otros',
+                    'concepto' => 'otros - Consulta #' . $consultation->id,
                     'porcentaje' => $porcentajeOtros,
                     'monto' => $montoOtros,
                 ]);
@@ -326,7 +326,7 @@ class PagoMedicoController extends Controller
                 MovimientoCaja::create([
                     'caja_id' => $cajaDoctores->id,
                     'tipo' => 'ingreso',
-                    'concepto' => 'Atención médica',
+                    'concepto' => 'Atención médica - Consulta #' . $consultation->id,
                     'monto' => $montoMedico,
                     'saldo_anterior' => $saldoAnterior,
                     'saldo_nuevo' => $saldoNuevo,
@@ -357,7 +357,7 @@ class PagoMedicoController extends Controller
                 MovimientoCaja::create([
                     'caja_id' => $cajaEmpresa->id,
                     'tipo' => 'ingreso',
-                    'concepto' => 'Atención médica - Empresa',
+                    'concepto' => 'Atención médica - Consulta #' . $consultation->id,
                     'monto' => $montoInstitucion,
                     'saldo_anterior' => $saldoAnterior,
                     'saldo_nuevo' => $saldoNuevo,
@@ -388,7 +388,7 @@ class PagoMedicoController extends Controller
                 MovimientoCaja::create([
                     'caja_id' => $cajaOtros->id,
                     'tipo' => 'ingreso',
-                    'concepto' => 'Atención médica - Otros',
+                    'concepto' => 'Atención médica - Consulta #' . $consultation->id,
                     'monto' => $montoOtros,
                     'saldo_anterior' => $saldoAnterior,
                     'saldo_nuevo' => $saldoNuevo,
