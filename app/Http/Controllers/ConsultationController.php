@@ -52,6 +52,13 @@ class ConsultationController extends Controller
             'atendido' => true
         ]);
 
+        // Cambiar el estado de la cita a "atendido"
+        if ($consultation->appointment) {
+            $consultation->appointment->update([
+                'estado' => 'atendido'
+            ]);
+        }
+
         return redirect()->route('consultations.index')
             ->with('success', 'Consulta atendida correctamente');
     }

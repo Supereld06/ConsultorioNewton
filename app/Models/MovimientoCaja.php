@@ -20,6 +20,8 @@ class MovimientoCaja extends Model
         'usuario_id',
         'fecha',
         'observacion',
+        'estado',
+        'transferencia_id',
     ];
 
     protected $casts = [
@@ -29,25 +31,13 @@ class MovimientoCaja extends Model
         'fecha' => 'datetime',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | CAJA
-    |--------------------------------------------------------------------------
-    */
-
     public function caja()
     {
         return $this->belongsTo(Caja::class);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | USUARIO
-    |--------------------------------------------------------------------------
-    */
-
     public function usuario()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'usuario_id');
     }
 }

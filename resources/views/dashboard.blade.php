@@ -2,162 +2,492 @@
 
 @section('content')
 
-    <div class="container mt-4">
+    <div class="container-fluid mt-4">
 
-        <h2 class="mb-4">🏥 Panel de Control</h2>
+        {{-- =====================================================
+        ENCABEZADO
+        ====================================================== --}}
 
-        {{-- 🔷 TARJETAS --}}
-        <div class="row g-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
 
-            <!-- Pacientes -->
-            <div class="col-md-3">
-                <div class="card shadow text-center">
-                    <div class="card-body">
-                        <h5>👨 Pacientes</h5>
-                        <h2 class="fw-bold text-primary">
-                            {{ $patients }}
-                        </h2>
-                        <p class="text-muted">Registrados</p>
-                        <a href="{{ route('patients.index') }}" class="btn btn-primary btn-sm">
-                            Ver pacientes
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <div>
+                <h2 class="mb-1">🏥 Panel de Control</h2>
 
-            <!-- Citas Hoy -->
-            <div class="col-md-3">
-                <div class="card shadow text-center">
-                    <div class="card-body">
-                        <h5>📅 Citas hoy</h5>
-                        <h2 class="fw-bold text-success">
-                            {{ $appointmentsToday }}
-                        </h2>
-                        <p class="text-muted">Programadas hoy</p>
-                        <a href="{{ route('appointments.index') }}" class="btn btn-success btn-sm">
-                            Ver citas
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Consultas Hoy -->
-            <div class="col-md-3">
-                <div class="card shadow text-center">
-                    <div class="card-body">
-                        <h5>🩺 Consultas hoy</h5>
-                        <h2 class="fw-bold text-warning">
-                            {{ $consultationsToday }}
-                        </h2>
-                        <p class="text-muted">Atendidas</p>
-                        <a href="{{ route('consultations.index') }}" class="btn btn-warning btn-sm">
-                            Ver consultas
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Doctores -->
-            <div class="col-md-3">
-                <div class="card shadow text-center">
-                    <div class="card-body">
-                        <h5>👨‍⚕️ Doctores</h5>
-                        <h2 class="fw-bold text-info">
-                            {{ $doctors }}
-                        </h2>
-                        <p class="text-muted">Activos</p>
-                        <a href="{{ route('doctors.index') }}" class="btn btn-info btn-sm">
-                            Ver doctores
-                        </a>
-                    </div>
-                </div>
+                <small class="text-muted">
+                    Resumen general del consultorio
+                </small>
             </div>
 
         </div>
 
-        {{-- 🔥 LISTADO DE CITAS DE HOY --}}
-        <div class="card mt-5 shadow">
 
-            <div class="card-header bg-dark text-white">
-                📅 Citas Médicas de Hoy
+        {{-- =====================================================
+        TARJETAS
+        ====================================================== --}}
+
+        <div class="row g-3">
+
+            {{-- PACIENTES --}}
+            <div class="col-md-3">
+
+                <div class="card shadow-sm text-center h-100">
+
+                    <div class="card-body py-3">
+
+                        <h6 class="mb-1">
+                            👨 Pacientes
+                        </h6>
+
+                        <h2 class="fw-bold text-primary mb-1">
+                            {{ $patients }}
+                        </h2>
+
+                        <small class="text-muted">
+                            Registrados
+                        </small>
+
+                        <div class="mt-2">
+
+                            <a href="{{ route('patients.index') }}" class="btn btn-primary btn-sm">
+
+                                Ver pacientes
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
+
+
+            {{-- CITAS HOY --}}
+            <div class="col-md-3">
+
+                <div class="card shadow-sm text-center h-100">
+
+                    <div class="card-body py-3">
+
+                        <h6 class="mb-1">
+                            📅 Citas hoy
+                        </h6>
+
+                        <h2 class="fw-bold text-success mb-1">
+                            {{ $appointmentsToday }}
+                        </h2>
+
+                        <small class="text-muted">
+                            Programadas hoy
+                        </small>
+
+                        <div class="mt-2">
+
+                            <a href="{{ route('appointments.index') }}" class="btn btn-success btn-sm">
+
+                                Ver citas
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {{-- CONSULTAS HOY --}}
+            <div class="col-md-3">
+
+                <div class="card shadow-sm text-center h-100">
+
+                    <div class="card-body py-3">
+
+                        <h6 class="mb-1">
+                            🩺 Consultas hoy
+                        </h6>
+
+                        <h2 class="fw-bold text-warning mb-1">
+                            {{ $consultationsToday }}
+                        </h2>
+
+                        <small class="text-muted">
+                            Atendidas
+                        </small>
+
+                        <div class="mt-2">
+
+                            <a href="{{ route('consultations.index') }}" class="btn btn-warning btn-sm">
+
+                                Ver consultas
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {{-- DOCTORES --}}
+            <div class="col-md-3">
+
+                <div class="card shadow-sm text-center h-100">
+
+                    <div class="card-body py-3">
+
+                        <h6 class="mb-1">
+                            👨‍⚕️ Doctores
+                        </h6>
+
+                        <h2 class="fw-bold text-info mb-1">
+                            {{ $doctors }}
+                        </h2>
+
+                        <small class="text-muted">
+                            Activos
+                        </small>
+
+                        <div class="mt-2">
+
+                            <a href="{{ route('doctors.index') }}" class="btn btn-info btn-sm">
+
+                                Ver doctores
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- =====================================================
+        TODAS LAS CITAS MÉDICAS
+        ====================================================== --}}
+
+        <div class="card mt-4 shadow-sm">
+
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+
+                <div>
+                    📅 <strong>Todas las Citas Médicas</strong>
+                </div>
+
+                <span class="badge bg-light text-dark">
+                    {{ $appointmentsList->total() }} registros
+                </span>
+
+            </div>
+
 
             <div class="card-body p-0">
 
-                <table class="table table-hover mb-0">
+                <div class="table-responsive">
 
-                    <thead class="table-light">
-                        <tr>
-                            <th>Hora</th>
-                            <th>Paciente</th>
-                            <th>Doctor</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
+                    <table class="table table-hover table-bordered mb-0 align-middle">
 
-                    <tbody>
-
-                        @forelse($appointmentsList as $a)
+                        <thead class="table-light">
 
                             <tr>
 
-                                <td>
-                                    <strong>{{ $a->hora }}</strong>
-                                </td>
+                                <th class="text-center">
+                                    Fecha
+                                </th>
 
-                                <td>
-                                    {{ $a->patient->nombres }}
-                                </td>
+                                <th class="text-center">
+                                    Hora
+                                </th>
 
-                                <td>
-                                    {{ $a->doctor->nombres }}
-                                </td>
+                                <th>
+                                    Paciente
+                                </th>
 
-                                <td>
+                                <th>
+                                    Doctor
+                                </th>
 
-                                    @if($a->consultation && $a->consultation->atendido)
-                                        <span class="badge bg-success">Atendido</span>
-                                    @else
-                                        <span class="badge bg-danger">Pendiente</span>
-                                    @endif
+                                <th class="text-center">
+                                    Estado
+                                </th>
 
-                                </td>
-
-                                <td>
-
-                                    {{-- ATENDER --}}
-                                    <a href="{{ route('consultations.atender', $a->id) }}" class="btn btn-sm btn-primary">
-                                        ATENDER
-                                    </a>
-
-                                    {{-- PDF --}}
-                                    @if($a->consultation && $a->consultation->atendido)
-                                        <a href="{{ route('consultations.pdf', $a->consultation->id) }}"
-                                            class="btn btn-sm btn-secondary">
-                                            IMRPIMIR RECETA
-                                        </a>
-                                    @endif
-
-                                </td>
+                                <th class="text-center">
+                                    Documentos
+                                </th>
 
                             </tr>
 
-                        @empty
+                        </thead>
 
-                            <tr>
-                                <td colspan="5" class="text-center text-muted">
-                                    No hay citas para hoy
-                                </td>
-                            </tr>
 
-                        @endforelse
+                        <tbody>
 
-                    </tbody>
+                            @forelse($appointmentsList as $a)
 
-                </table>
+                                @php
+
+                                    $consulta = $a->consultation;
+
+                                    $curacion = $consulta?->curacion;
+
+                                    $estudios = $consulta?->estudiosComplementarios;
+
+                                @endphp
+
+
+                                <tr>
+
+                                    {{-- =================================================
+                                    FECHA
+                                    ================================================== --}}
+
+                                    <td class="text-center">
+
+                                        <strong>
+                                            {{ \Carbon\Carbon::parse($a->fecha)->format('d/m/Y') }}
+                                        </strong>
+
+                                    </td>
+
+
+                                    {{-- =================================================
+                                    HORA
+                                    ================================================== --}}
+
+                                    <td class="text-center">
+
+                                        <span class="badge bg-secondary">
+
+                                            {{ \Carbon\Carbon::parse($a->hora)->format('H:i') }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    {{-- =================================================
+                                    PACIENTE
+                                    ================================================== --}}
+
+                                    <td>
+
+                                        @if($a->patient)
+
+                                            <strong>
+                                                {{ $a->patient->nombres }}
+                                                {{ $a->patient->apellidos }}
+                                            </strong>
+
+                                        @else
+
+                                            <span class="text-muted">
+                                                Sin paciente
+                                            </span>
+
+                                        @endif
+
+                                    </td>
+
+
+                                    {{-- =================================================
+                                    DOCTOR
+                                    ================================================== --}}
+
+                                    <td>
+
+                                        @if($a->doctor)
+
+                                            Dr./Dra.
+                                            {{ $a->doctor->nombres }}
+                                            {{ $a->doctor->apellidos }}
+
+                                        @else
+
+                                            <span class="text-muted">
+                                                Sin doctor
+                                            </span>
+
+                                        @endif
+
+                                    </td>
+
+
+                                    {{-- =================================================
+                                    ESTADO
+                                    ================================================== --}}
+
+                                    <td class="text-center">
+
+                                        @if(!$consulta)
+
+                                            <span class="badge bg-secondary">
+                                                Sin atención
+                                            </span>
+
+                                        @elseif(!$consulta->atendido)
+
+                                            <span class="badge bg-warning text-dark">
+                                                En proceso
+                                            </span>
+
+                                        @else
+
+                                            <span class="badge bg-success">
+                                                Atendido
+                                            </span>
+
+                                        @endif
+
+                                    </td>
+
+
+                                    {{-- =================================================
+                                    DOCUMENTOS
+                                    ================================================== --}}
+
+                                    <td>
+
+                                        @if($consulta && $consulta->atendido)
+
+                                                                    <div class="d-flex justify-content-center flex-wrap gap-1">
+
+
+                                                                        {{-- ==============================
+                                                                        RECETA
+                                                                        =============================== --}}
+
+                                                                        <a href="{{ route(
+                                                'consultations.pdf',
+                                                $consulta->id
+                                            ) }}" target="_blank" class="btn btn-info btn-sm" title="Imprimir receta">
+
+                                                                            📄
+
+                                                                        </a>
+
+
+                                                                        {{-- ==============================
+                                                                        RECIBO CONSULTA
+                                                                        =============================== --}}
+
+                                                                        <a href="{{ route(
+                                                'consultations.receipt',
+                                                $consulta->id
+                                            ) }}" target="_blank" class="btn btn-dark btn-sm"
+                                                                            title="Recibo de consulta médica">
+
+                                                                            🧾
+
+                                                                        </a>
+
+
+                                                                        {{-- ==============================
+                                                                        RECIBO CURACIÓN
+                                                                        =============================== --}}
+
+                                                                        @if($curacion)
+
+                                                                                                    <a href="{{ route(
+                                                                                'curaciones.pdf',
+                                                                                $curacion->id
+                                                                            ) }}" target="_blank" class="btn btn-danger btn-sm"
+                                                                                                        title="Recibo de curación">
+
+                                                                                                        🛡️
+
+                                                                                                    </a>
+
+                                                                        @endif
+
+
+                                                                        {{-- ==============================
+                                                                        ESTUDIOS
+                                                                        =============================== --}}
+
+@foreach($estudios as $estudio)
+
+    @if($estudio->estado == 1)
+
+        <a href="{{ route('estudios.pdf.paciente', $estudio->id) }}"
+           target="_blank"
+           class="btn btn-primary btn-sm"
+           title="Recibo de estudio">
+            🩻
+        </a>
+
+    @endif
+
+@endforeach
+
+
+                                                                    </div>
+
+                                        @else
+
+                                            <span class="text-muted small">
+                                                Sin documentos
+                                            </span>
+
+                                        @endif
+
+                                    </td>
+
+                                </tr>
+
+
+                            @empty
+
+                                <tr>
+
+                                    <td colspan="6" class="text-center text-muted py-5">
+
+                                        <div class="fs-1">
+                                            📅
+                                        </div>
+
+                                        <h5 class="mt-2">
+                                            No hay citas médicas registradas
+                                        </h5>
+
+                                    </td>
+
+                                </tr>
+
+                            @endforelse
+
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
+
+
+            {{-- =====================================================
+            PAGINACIÓN
+            ====================================================== --}}
+
+            @if($appointmentsList->hasPages())
+
+                <div class="card-footer">
+
+                    {{ $appointmentsList->links() }}
+
+                </div>
+
+            @endif
 
         </div>
 

@@ -205,12 +205,6 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('medical_receipts.index') }}">
-                        📊 Reportes Pago Doctores
-                    </a>
-                </li>
-
                 @if(Auth::user()->id == 1) <!-- Solo el usuario admin puede ver la sección de usuarios -->
                     <li class="nav-item">
                         <a href="{{ route('users.index') }}" class="nav-link">
@@ -253,7 +247,7 @@
     </div>
 
     <!-- Bootstrap JS -->
-    ```html
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -265,7 +259,7 @@
 
     <!-- Select2 -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    ```
+    
 
 
 </body>

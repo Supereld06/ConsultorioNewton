@@ -20,6 +20,7 @@ use App\Http\Controllers\EstudioComplementarioController;
 use App\Http\Controllers\CajaController;
 use App\Http\Controllers\PagoMedicoController;
 use App\Http\Controllers\LiquidacionMedicoController;
+use App\Http\Controllers\MovimientoCajaController;
 
 
 Route::get('/', function () {
@@ -251,17 +252,62 @@ Route::middleware('auth')->group(function () {
         ->name('estudios.pdf.laboratorio');
 
 
+    // =====================================================
+// CAJAS
+// =====================================================
+
     Route::get('/cajas', [CajaController::class, 'index'])
         ->name('cajas.index');
 
-    Route::get('/cajas/transferencia', [CajaController::class, 'formularioTransferencia'])
-        ->name('cajas.transferencia');
 
-    Route::post('/cajas/transferencia', [CajaController::class, 'transferir'])
-        ->name('cajas.transferencia.store');
+    // -----------------------------------------------------
+// MOVIMIENTOS DE UNA CAJA
+// -----------------------------------------------------
 
     Route::get('/cajas/{id}/movimientos', [CajaController::class, 'movimientos'])
         ->name('cajas.movimientos');
+
+
+    // -----------------------------------------------------
+// INGRESOS
+// -----------------------------------------------------
+
+    Route::get('/cajas/{id}/ingreso', [CajaController::class, 'formularioIngreso'])
+        ->name('cajas.ingreso');
+
+    Route::post('/cajas/{id}/ingreso', [CajaController::class, 'ingresar'])
+        ->name('cajas.ingreso.store');
+
+
+    // -----------------------------------------------------
+// EGRESOS
+// -----------------------------------------------------
+
+    Route::get('/cajas/{id}/egreso', [CajaController::class, 'formularioEgreso'])
+        ->name('cajas.egreso');
+
+    Route::post('/cajas/{id}/egreso', [CajaController::class, 'egresar'])
+        ->name('cajas.egreso.store');
+
+
+    // -----------------------------------------------------
+// TRANSFERENCIAS
+// -----------------------------------------------------
+
+    Route::get('/cajas/{id}/transferencia', [CajaController::class, 'formularioTransferencia'])
+        ->name('cajas.transferencia');
+
+    Route::post('/cajas/{id}/transferencia', [CajaController::class, 'transferir'])
+        ->name('cajas.transferencia.store');
+
+    Route::get('/cajas/{caja}/movimientos', [MovimientoCajaController::class, 'index'])
+        ->name('cajas.movimientos');
+
+    Route::get('/cajas/movimientos/{movimiento}/recibo', [MovimientoCajaController::class, 'recibo'])
+        ->name('cajas.movimientos.recibo');
+
+    Route::get('/cajas/movimientos/{movimiento}/recibo', [MovimientoCajaController::class, 'recibo'])
+        ->name('cajas.movimientos.recibo');
 
     // PAGOS MÉDICOS
     Route::get('/pagos-medicos/crear/{consultation_id}', [PagoMedicoController::class, 'create'])

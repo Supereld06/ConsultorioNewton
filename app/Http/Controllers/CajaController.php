@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Caja;
 use App\Models\MovimientoCaja;
+use App\Services\CajaService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 class CajaController extends Controller
 {
+    protected CajaService $cajaService;
+
+    public function __construct(CajaService $cajaService)
+    {
+        $this->cajaService = $cajaService;
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | LISTADO DE CAJAS
@@ -56,17 +65,190 @@ class CajaController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | FORMULARIO TRANSFERENCIA
+    | FORMULARIO DE INGRESO
     |--------------------------------------------------------------------------
     */
 
-    public function formularioTransferencia()
+    public function formularioIngreso($id)
     {
+        $caja = Caja::where('estado', true)
+            ->findOrFail($id);
+
+        return view('cajas.ingreso', compact('caja'));
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | REGISTRAR INGRESO
+    |--------------------------------------------------------------------------
+    */
+
+    public function ingresar(Request $request, $id)
+    {
+        $request->validate([
+            'monto' => [
+                'required',
+                'numeric',
+                'min:0.01',
+            ],
+
+            'concepto' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+
+            'observacion' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
+        ], [
+            'monto.required' => 'El monto es obligatorio.',
+            'monto.numeric' => 'El monto debe ser numérico.',
+            'monto.min' => 'El monto debe ser mayor a cero.',
+            'concepto.required' => 'El concepto es obligatorio.',
+            'concepto.max' => 'El concepto no puede superar los 255 caracteres.',
+        ]);
+
+        try {
+
+            $caja = Caja::where('estado', true)
+                ->findOrFail($id);
+
+            $this->cajaService->ingresar(
+                $caja,
+                (float) $request->monto,
+                $request->concepto,
+                'ingreso_manual',
+                null,
+                $request->observacion
+            );
+
+            return redirect()
+                ->route('cajas.movimientos', $caja->id)
+                ->with(
+                    'success',
+                    'Ingreso registrado correctamente.'
+                );
+
+        } catch (Throwable $e) {
+
+            report($e);
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'monto' => $e->getMessage()
+                ]);
+        }
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FORMULARIO DE EGRESO
+    |--------------------------------------------------------------------------
+    */
+
+    public function formularioEgreso($id)
+    {
+        $caja = Caja::where('estado', true)
+            ->findOrFail($id);
+
+        return view('cajas.egreso', compact('caja'));
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | REGISTRAR EGRESO
+    |--------------------------------------------------------------------------
+    */
+
+    public function egresar(Request $request, $id)
+    {
+        $request->validate([
+            'monto' => [
+                'required',
+                'numeric',
+                'min:0.01',
+            ],
+
+            'concepto' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+
+            'observacion' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
+        ], [
+            'monto.required' => 'El monto es obligatorio.',
+            'monto.numeric' => 'El monto debe ser numérico.',
+            'monto.min' => 'El monto debe ser mayor a cero.',
+            'concepto.required' => 'El concepto es obligatorio.',
+            'concepto.max' => 'El concepto no puede superar los 255 caracteres.',
+        ]);
+
+        try {
+
+            $caja = Caja::where('estado', true)
+                ->findOrFail($id);
+
+            $this->cajaService->egresar(
+                $caja,
+                (float) $request->monto,
+                $request->concepto,
+                'egreso_manual',
+                null,
+                $request->observacion
+            );
+
+            return redirect()
+                ->route('cajas.movimientos', $caja->id)
+                ->with(
+                    'success',
+                    'Egreso registrado correctamente.'
+                );
+
+        } catch (Throwable $e) {
+
+            report($e);
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'monto' => $e->getMessage()
+                ]);
+        }
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FORMULARIO DE TRANSFERENCIA
+    |--------------------------------------------------------------------------
+    */
+
+    public function formularioTransferencia($id)
+    {
+        $caja = Caja::where('estado', true)
+            ->findOrFail($id);
+
         $cajas = Caja::where('estado', true)
+            ->where('id', '!=', $caja->id)
             ->orderBy('nombre')
             ->get();
 
-        return view('cajas.transferencia', compact('cajas'));
+        return view('cajas.transferencia', compact(
+            'caja',
+            'cajas'
+        ));
     }
 
 
@@ -76,150 +258,49 @@ class CajaController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function transferir(Request $request)
+    public function transferir(Request $request, $id)
     {
         $request->validate([
-            'caja_origen_id' => 'required|different:caja_destino_id|exists:cajas,id',
-            'caja_destino_id' => 'required|exists:cajas,id',
-            'monto' => 'required|numeric|min:0.01',
-            'observacion' => 'nullable|string|max:1000',
+            'caja_destino_id' => [
+                'required',
+                'exists:cajas,id',
+                'different:' . $id,
+            ],
+
+            'monto' => [
+                'required',
+                'numeric',
+                'min:0.01',
+            ],
+
+            'observacion' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
+        ], [
+            'caja_destino_id.required' => 'Debes seleccionar una caja destino.',
+            'caja_destino_id.exists' => 'La caja destino no existe.',
+            'caja_destino_id.different' => 'La caja destino debe ser diferente a la caja origen.',
+            'monto.required' => 'El monto es obligatorio.',
+            'monto.numeric' => 'El monto debe ser numérico.',
+            'monto.min' => 'El monto debe ser mayor a cero.',
         ]);
 
         try {
 
-            DB::transaction(function () use ($request) {
+            $origen = Caja::where('estado', true)
+                ->findOrFail($id);
 
-                $origen = Caja::lockForUpdate()
-                    ->findOrFail($request->caja_origen_id);
+            $destino = Caja::where('estado', true)
+                ->findOrFail($request->caja_destino_id);
 
-                $destino = Caja::lockForUpdate()
-                    ->findOrFail($request->caja_destino_id);
-
-                $monto = (float) $request->monto;
-
-
-                /*
-                 * Verificar saldo
-                 */
-
-                if ($origen->saldo < $monto) {
-
-                    throw new \Exception(
-                        'Saldo insuficiente en la caja ' .
-                        $origen->nombre .
-                        '. Saldo disponible: Bs. ' .
-                        number_format($origen->saldo, 2) .
-                        '. Monto solicitado: Bs. ' .
-                        number_format($monto, 2)
-                    );
-                }
-
-
-                $saldoAnteriorOrigen = (float) $origen->saldo;
-
-                $saldoAnteriorDestino = (float) $destino->saldo;
-
-
-                $nuevoSaldoOrigen =
-                    $saldoAnteriorOrigen - $monto;
-
-                $nuevoSaldoDestino =
-                    $saldoAnteriorDestino + $monto;
-
-
-                /*
-                 * Actualizar origen
-                 */
-
-                $origen->update([
-                    'saldo' => $nuevoSaldoOrigen,
-                ]);
-
-
-                /*
-                 * Actualizar destino
-                 */
-
-                $destino->update([
-                    'saldo' => $nuevoSaldoDestino,
-                ]);
-
-
-                /*
-                 * Movimiento de salida
-                 */
-
-                MovimientoCaja::create([
-
-                    'caja_id' => $origen->id,
-
-                    'tipo' => 'egreso',
-
-                    'concepto' =>
-                        'Transferencia a ' .
-                        $destino->nombre,
-
-                    'monto' => $monto,
-
-                    'saldo_anterior' =>
-                        $saldoAnteriorOrigen,
-
-                    'saldo_nuevo' =>
-                        $nuevoSaldoOrigen,
-
-                    'referencia_tipo' =>
-                        'transferencia',
-
-                    'usuario_id' =>
-                        Auth::id(),
-
-                    'fecha' =>
-                        now(),
-
-                    'observacion' =>
-                        $request->observacion,
-
-                ]);
-
-
-                /*
-                 * Movimiento de entrada
-                 */
-
-                MovimientoCaja::create([
-
-                    'caja_id' => $destino->id,
-
-                    'tipo' => 'ingreso',
-
-                    'concepto' =>
-                        'Transferencia desde ' .
-                        $origen->nombre,
-
-                    'monto' => $monto,
-
-                    'saldo_anterior' =>
-                        $saldoAnteriorDestino,
-
-                    'saldo_nuevo' =>
-                        $nuevoSaldoDestino,
-
-                    'referencia_tipo' =>
-                        'transferencia',
-
-                    'usuario_id' =>
-                        Auth::id(),
-
-                    'fecha' =>
-                        now(),
-
-                    'observacion' =>
-                        $request->observacion,
-
-                ]);
-
-            });
-
+            $this->cajaService->transferir(
+                $origen,
+                $destino,
+                (float) $request->monto,
+                $request->observacion
+            );
 
             return redirect()
                 ->route('cajas.index')
@@ -228,8 +309,9 @@ class CajaController extends Controller
                     'Transferencia realizada correctamente.'
                 );
 
+        } catch (Throwable $e) {
 
-        } catch (\Exception $e) {
+            report($e);
 
             return back()
                 ->withInput()

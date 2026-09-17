@@ -2,93 +2,157 @@
 
 @section('content')
 
-
-        <h2 class="mb-0">
-            💰 Cajas
-        </h2>
-        <small class="">
-            Control de cajas y movimiento de dinero
-        </small>
-
     <div class="container-fluid">
 
-        {{-- Mensaje --}}
-        @if(session('success'))
-
-            <div class="alert alert-success">
-                {{ session('success') }}
+        {{-- ENCABEZADO --}}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2 class="mb-0">💰 Cajas</h2>
+                <small class="text-muted">
+                    Control de cajas y movimiento de dinero
+                </small>
             </div>
-
-        @endif
-
-
-        {{-- Total --}}
-        <div class="card shadow-sm mb-4">
-
-            <div class="card-body text-center">
-
-                <h6 class="text-muted">
-                    Dinero total en cajas
-                </h6>
-
-                <h2 class="fw-bold">
-                    Bs. {{ number_format($totalCajas, 2) }}
-                </h2>
-
-            </div>
-
         </div>
 
 
-        {{-- Cajas --}}
-        <div class="row">
+        {{-- MENSAJE DE ÉXITO --}}
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show py-2 mb-3">
+                {{ session('success') }}
 
-            @foreach($cajas as $caja)
+                <button type="button" class="btn-close" data-bs-dismiss="alert">
+                </button>
+            </div>
+        @endif
 
-                <div class="col-md-4 mb-4">
+
+        {{-- ERRORES --}}
+        @if($errors->any())
+            <div class="alert alert-danger py-2 mb-3">
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+
+        {{-- TOTAL GENERAL --}}
+        <div class="card shadow-sm mb-3">
+            <div class="card-body py-3 text-center">
+
+                <div class="text-muted small">
+                    Dinero total en cajas
+                </div>
+
+                <div class="fs-3 fw-bold">
+                    Bs. {{ number_format($totalCajas, 2) }}
+                </div>
+
+            </div>
+        </div>
+
+
+        {{-- CAJAS --}}
+        <div class="row g-3">
+
+            @forelse($cajas as $caja)
+
+                <div class="col-lg-4 col-md-6">
 
                     <div class="card shadow-sm h-100">
 
-                        <div class="card-body text-center">
+                        <div class="card-body p-3">
 
-                            @if($caja->nombre == 'Doctores')
+                            {{-- ICONO --}}
+                            <div class="text-center">
 
-                                <div style="font-size: 50px;">
-                                    👨‍⚕️
-                                </div>
+                                @if($caja->nombre === 'Doctores')
+                                    <div style="font-size: 42px;">👨‍⚕️</div>
 
-                            @elseif($caja->nombre == 'Empresa')
+                                @elseif($caja->nombre === 'Empresa')
+                                    <div style="font-size: 42px;">🏢</div>
 
-                                <div style="font-size: 50px;">
-                                    🏢
-                                </div>
+                                @else
+                                    <div style="font-size: 42px;">📦</div>
+                                @endif
 
-                            @else
-
-                                <div style="font-size: 50px;">
-                                    📦
-                                </div>
-
-                            @endif
+                            </div>
 
 
-                            <h4 class="mt-2">
+                            {{-- NOMBRE --}}
+                            <h5 class="text-center mb-1">
                                 {{ $caja->nombre }}
-                            </h4>
+                            </h5>
 
 
-                            <h2 class="fw-bold">
-                                Bs.
-                                {{ number_format($caja->saldo, 2) }}
-                            </h2>
+                            {{-- SALDO --}}
+                            <div class="text-center mb-3">
+
+                                <small class="text-muted">
+                                    Saldo disponible
+                                </small>
+
+                                <div class="fs-4 fw-bold">
+                                    Bs. {{ number_format($caja->saldo, 2) }}
+                                </div>
+
+                            </div>
 
 
-                            <a href="{{ route('cajas.movimientos', $caja->id) }}"
-                               class="btn btn-primary">
+                            {{-- BOTONES --}}
+                            <div class="row g-2">
 
-                                Ver movimientos
+                                {{-- INGRESO --}}
+                                <div class="col-6">
 
-                            </a>
+                                    <a href="{{ route('cajas.ingreso', $caja->id) }}" class="btn btn-success btn-sm w-100">
+
+                                        ➕ Ingreso
+
+                                    </a>
+
+                                </div>
+
+
+                                {{-- EGRESO --}}
+                                <div class="col-6">
+
+                                    <a href="{{ route('cajas.egreso', $caja->id) }}" class="btn btn-danger btn-sm w-100">
+
+                                        ➖ Egreso
+
+                                    </a>
+
+                                </div>
+
+
+                                {{-- TRANSFERENCIA --}}
+                                <div class="col-6">
+
+                                    <a href="{{ route('cajas.transferencia', $caja->id) }}"
+                                        class="btn btn-warning btn-sm w-100">
+
+                                        🔄 Traspasar
+
+                                    </a>
+
+                                </div>
+
+
+                                {{-- MOVIMIENTOS --}}
+                                <div class="col-6">
+
+                                    <a href="{{ route('cajas.movimientos', $caja->id) }}" class="btn btn-primary btn-sm w-100">
+
+                                        📋 Movimientos
+
+                                    </a>
+
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -96,18 +160,17 @@
 
                 </div>
 
-            @endforeach
+            @empty
 
-        </div>
+                <div class="col-12">
 
+                    <div class="alert alert-info text-center">
+                        No existen cajas activas.
+                    </div>
 
-        {{-- Transferencia --}}
-        <div class="text-end">
+                </div>
 
-            <a href="{{ route('cajas.transferencia') }}"
-               class="btn btn-warning">
-                🔄 Transferir dinero
-            </a>
+            @endforelse
 
         </div>
 

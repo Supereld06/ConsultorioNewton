@@ -10,159 +10,530 @@
     </title>
 
     <style>
+        @page {
+            margin: 15px;
+        }
+
         body {
-            font-family: DejaVu Sans, sans-serif;
-            font-size: 12px;
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            color: #2c3e50;
+            margin: 0;
+            background: #ffffff;
         }
 
-        .titulo {
+        .recibo {
+            width: 100%;
+        }
+
+        /* MARCA DE AGUA */
+
+        .watermark {
+            position: fixed;
+            top: 42%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.04;
+        }
+
+        .watermark img {
+            width: 300px;
+        }
+
+        /* ENCABEZADO */
+
+        .header {
             text-align: center;
-            font-size: 20px;
+            border-bottom: 2px solid #0a2540;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .logo {
+            width: 85px;
+            margin-bottom: 3px;
+        }
+
+        .consultorio {
+            font-size: 11px;
             font-weight: bold;
+            color: #0a2540;
+            margin: 2px 0;
         }
 
-        .subtitulo {
-            text-align: center;
-            margin-bottom: 20px;
+        .header h2 {
+            margin: 5px 0 2px;
+            font-size: 17px;
+            color: #0a2540;
+            letter-spacing: 1px;
         }
+
+        .header p {
+            margin: 2px 0;
+            color: #4a5a6a;
+            font-size: 8px;
+        }
+
+        /* INFORMACIÓN */
+
+        .info {
+            margin-bottom: 12px;
+            padding: 8px;
+            background: #f4f7fb;
+            border-left: 4px solid #0a2540;
+        }
+
+        .info strong {
+            display: inline-block;
+            width: 90px;
+            color: #0a2540;
+        }
+
+        /* TÍTULOS */
+
+        .section-title {
+            margin-top: 12px;
+            margin-bottom: 7px;
+            font-size: 11px;
+            font-weight: bold;
+            color: #0a2540;
+            letter-spacing: 0.5px;
+        }
+
+        /* TABLA */
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th,
-        td {
-            border: 1px solid #ccc;
-            padding: 8px;
         }
 
         th {
-            background: #f2f2f2;
+            background: #0a2540;
+            color: white;
+            border: 1px solid #0a2540;
+            padding: 6px 5px;
+            text-align: left;
+            font-size: 9px;
         }
 
-        .total {
+        td {
+            border-bottom: 1px solid #dce3ec;
+            padding: 7px 5px;
+            font-size: 9px;
+        }
+
+        .right {
             text-align: right;
-            font-size: 16px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        /* TOTAL */
+
+        .total {
+            margin-top: 15px;
+            width: 48%;
+            margin-left: auto;
+        }
+
+        .total td {
+            border: none;
+            padding: 5px;
+            font-size: 9px;
+        }
+
+        .total-final {
+            border-top: 2px solid #0a2540 !important;
+            font-size: 14px !important;
             font-weight: bold;
-            margin-top: 20px;
+            color: #0a2540;
+        }
+
+        /* MENSAJE */
+
+        .mensaje {
+            margin-top: 25px;
+            padding: 10px;
+            text-align: center;
+            background: #f4f7fb;
+            border: 1px solid #dce3ec;
+            font-size: 9px;
+        }
+
+        .mensaje strong {
+            color: #0a2540;
+        }
+
+        /* FIRMAS */
+
+        .firmas {
+            width: 100%;
+            margin-top: 45px;
+        }
+
+        .firma {
+            width: 44%;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .espacio {
+            width: 9%;
+            display: inline-block;
+        }
+
+        .linea {
+            border-top: 1px solid #0a2540;
+            width: 150px;
+            margin: auto;
+        }
+
+        .firma-titulo {
+            margin-top: 4px;
+            font-weight: bold;
+            color: #0a2540;
+            font-size: 9px;
+        }
+
+        .firma-subtitulo {
+            margin-top: 2px;
+            font-size: 8px;
+            color: #4a5a6a;
+        }
+
+        /* FOOTER */
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 8px;
+            color: #4a5a6a;
+            border-top: 1px solid #0a2540;
+            padding-top: 6px;
+        }
+
+        .footer p {
+            margin: 2px 0;
         }
     </style>
 
 </head>
 
-
 <body>
 
-    @php
+    <div class="recibo">
 
-        $paciente =
-            $estudio->consultation?->appointment?->patient;
+        @php
 
-        $doctor =
-            $estudio->consultation?->appointment?->doctor;
+            $paciente =
+                $estudio->consultation?->appointment?->patient;
 
-    @endphp
+            $doctor =
+                $estudio->consultation?->appointment?->doctor;
 
-
-    <div class="titulo">
-        CONSULTORIO NEWTON
-    </div>
-
-    <div class="subtitulo">
-        COMPROBANTE DE PAGO A LABORATORIO
-    </div>
+        @endphp
 
 
-    <strong>Registro:</strong>
-    {{ $estudio->codigo }}
+        {{-- MARCA DE AGUA --}}
 
-    <br>
+        <div class="watermark">
 
-    <strong>Fecha:</strong>
-    {{ $estudio->fecha?->format('d/m/Y') }}
+            <img src="{{ public_path('img/logo.jpeg') }}">
 
-    <br><br>
+        </div>
 
 
-    <strong>Paciente:</strong>
+        {{-- ENCABEZADO --}}
 
-    @if($paciente)
+        <div class="header">
 
-        {{ $paciente->nombres }}
-        {{ $paciente->apellidos }}
+            <img src="{{ public_path('img/logo.jpeg') }}" class="logo">
 
-    @endif
+            <div class="consultorio">
+                CONSULTORIO MÉDICO NEWTON
+            </div>
 
+            <h2>
+                COMPROBANTE DE PAGO A LABORATORIO
+            </h2>
 
-    <br>
+            <p>
+                PAGO DE SERVICIOS DE ESTUDIOS COMPLEMENTARIOS
+            </p>
 
-    <strong>Doctor:</strong>
-
-    @if($doctor)
-
-        Dr./Dra.
-        {{ $doctor->nombres }}
-        {{ $doctor->apellidos }}
-
-    @endif
+        </div>
 
 
-    <table>
+        {{-- INFORMACIÓN --}}
 
-        <thead>
+        <div class="info">
 
-            <tr>
+            <strong>Registro:</strong>
+            {{ $estudio->codigo }}
 
-                <th>Estudio</th>
+            <br>
 
-                <th>Laboratorio</th>
+            <strong>Fecha:</strong>
 
-                <th>Costo</th>
+            {{ $estudio->fecha
+    ? $estudio->fecha->format('d/m/Y')
+    : '-'
+        }}
 
-            </tr>
+            <br>
 
-        </thead>
+            <strong>Paciente:</strong>
+
+            @if($paciente)
+
+                {{ $paciente->nombres }}
+                {{ $paciente->apellidos }}
+
+            @else
+
+                -
+
+            @endif
+
+            <br>
+
+            <strong>CI:</strong>
+
+            {{ $paciente?->ci ?? '-' }}
+
+            <br>
+
+            <strong>Doctor:</strong>
+
+            @if($doctor)
+
+                Dr./Dra.
+                {{ $doctor->nombres }}
+                {{ $doctor->apellidos }}
+
+            @else
+
+                -
+
+            @endif
+
+            <br>
+
+            <strong>Especialidad:</strong>
+
+            {{ $doctor?->especialidad ?? '-' }}
+
+            <br>
+
+            <strong>Consulta:</strong>
+
+            #{{ $estudio->consultation_id }}
+
+        </div>
 
 
-        <tbody>
+        {{-- DETALLE --}}
 
-            @foreach($estudio->detalles as $detalle)
+        <div class="section-title">
+
+            DETALLE DE PAGO AL LABORATORIO
+
+        </div>
+
+
+        <table>
+
+            <thead>
 
                 <tr>
 
-                    <td>
-                        {{ $detalle->nombre_estudio }}
-                    </td>
+                    <th>
+                        Estudio
+                    </th>
 
-                    <td>
-                        {{ $detalle->laboratorio ?? '-' }}
-                    </td>
+                    <th>
+                        Laboratorio
+                    </th>
 
-                    <td>
-                        Bs.
-                        {{ number_format($detalle->precio_laboratorio, 2) }}
-                    </td>
+                    <th class="right">
+                        Costo
+                    </th>
 
                 </tr>
 
-            @endforeach
+            </thead>
 
-        </tbody>
+            <tbody>
 
-    </table>
+                @forelse($estudio->detalles as $detalle)
+
+                                <tr>
+
+                                    <td>
+                                        {{ $detalle->nombre_estudio }}
+                                    </td>
+
+                                    <td>
+                                        {{ $detalle->laboratorio ?? '-' }}
+                                    </td>
+
+                                    <td class="right">
+
+                                        Bs.
+                                        {{ number_format(
+                        $detalle->precio_laboratorio,
+                        2
+                    ) }}
+
+                                    </td>
+
+                                </tr>
+
+                @empty
+
+                    <tr>
+
+                        <td colspan="3" class="center">
+                            No se registraron estudios.
+                        </td>
+
+                    </tr>
+
+                @endforelse
+
+            </tbody>
+
+        </table>
 
 
-    <div class="total">
+        {{-- TOTAL --}}
 
-        TOTAL A PAGAR AL LABORATORIO:
+        <table class="total">
 
-        Bs.
-        {{ number_format($estudio->monto_pagado_laboratorio, 2) }}
+            <tr>
+
+                <td>
+                    <strong>Total laboratorio:</strong>
+                </td>
+
+                <td class="right">
+
+                    Bs.
+                    {{ number_format(
+    $estudio->monto_pagado_laboratorio,
+    2
+) }}
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="total-final">
+                    TOTAL A PAGAR:
+                </td>
+
+                <td class="right total-final">
+
+                    Bs.
+                    {{ number_format(
+    $estudio->monto_pagado_laboratorio,
+    2
+) }}
+
+                </td>
+
+            </tr>
+
+        </table>
+
+
+        {{-- MENSAJE --}}
+
+        <div class="mensaje">
+
+            <strong>
+                COMPROBANTE DE PAGO AL LABORATORIO
+            </strong>
+
+            <br>
+
+            Este comprobante corresponde al importe
+            destinado al pago de los servicios de
+            laboratorio de los estudios realizados.
+
+        </div>
+
+
+        {{-- FIRMAS --}}
+
+        <div class="firmas">
+
+            <div class="firma">
+
+                <div class="linea"></div>
+
+                <div class="firma-titulo">
+                    Responsable
+                </div>
+
+                <div class="firma-subtitulo">
+                    Consultorio Médico Newton
+                </div>
+
+            </div>
+
+
+            <div class="espacio">
+                &nbsp;
+            </div>
+
+
+            <div class="firma">
+
+                <div class="linea"></div>
+
+                <div class="firma-titulo">
+                    Laboratorio
+                </div>
+
+                <div class="firma-subtitulo">
+                    Firma de recepción
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- FOOTER --}}
+
+        <div class="footer">
+
+            <p>
+                Dirección: M. Ricardo Terrazas #1067 entre
+                Benjamín Blanco y Medizabal
+            </p>
+
+            <p>
+                Teléfono: 68574372
+            </p>
+
+            <p>
+                TikTok: @consultorio_mediconewton
+            </p>
+
+            <p>
+                Gracias por su preferencia
+            </p>
+
+        </div>
+
 
     </div>
-
 
 </body>
 

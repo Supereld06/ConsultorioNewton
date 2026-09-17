@@ -14,7 +14,7 @@
                     <div class="card-header">
 
                         <h5 class="mb-0">
-                            🔄 Transferir dinero
+                            ➕ Registrar ingreso
                         </h5>
 
                     </div>
@@ -22,24 +22,22 @@
 
                     <div class="card-body">
 
-                        {{-- CAJA ORIGEN --}}
-                        <div class="alert alert-warning py-2 mb-3">
+                        {{-- CAJA --}}
+                        <div class="alert alert-light border py-2 mb-3">
 
                             <div class="small text-muted">
-                                Caja origen
+                                Caja
                             </div>
 
                             <strong>
                                 {{ $caja->nombre }}
                             </strong>
 
-                            <div class="small">
-
-                                Saldo disponible:
+                            <div class="small text-muted">
+                                Saldo actual:
                                 <strong>
                                     Bs. {{ number_format($caja->saldo, 2) }}
                                 </strong>
-
                             </div>
 
                         </div>
@@ -65,46 +63,16 @@
                         @endif
 
 
-                        <form action="{{ route('cajas.transferencia.store', $caja->id) }}" method="POST">
+                        <form action="{{ route('cajas.ingreso.store', $caja->id) }}" method="POST">
 
                             @csrf
-
-
-                            {{-- DESTINO --}}
-                            <div class="mb-3">
-
-                                <label class="form-label">
-                                    Caja destino
-                                </label>
-
-                                <select name="caja_destino_id" class="form-select" required>
-
-                                    <option value="">
-                                        -- Seleccionar caja destino --
-                                    </option>
-
-                                    @foreach($cajas as $destino)
-
-                                        <option value="{{ $destino->id }}" {{ old('caja_destino_id') == $destino->id ? 'selected' : '' }}>
-
-                                            {{ $destino->nombre }}
-                                            — Bs.
-                                            {{ number_format($destino->saldo, 2) }}
-
-                                        </option>
-
-                                    @endforeach
-
-                                </select>
-
-                            </div>
 
 
                             {{-- MONTO --}}
                             <div class="mb-3">
 
                                 <label class="form-label">
-                                    Monto a transferir
+                                    Monto
                                 </label>
 
                                 <div class="input-group">
@@ -114,16 +82,22 @@
                                     </span>
 
                                     <input type="number" name="monto" class="form-control" step="0.01" min="0.01"
-                                        max="{{ $caja->saldo }}" value="{{ old('monto') }}" required>
+                                        value="{{ old('monto') }}" required>
 
                                 </div>
 
-                                <small class="text-muted">
+                            </div>
 
-                                    Máximo disponible:
-                                    Bs. {{ number_format($caja->saldo, 2) }}
 
-                                </small>
+                            {{-- CONCEPTO --}}
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Concepto
+                                </label>
+
+                                <input type="text" name="concepto" class="form-control" value="{{ old('concepto') }}"
+                                    maxlength="255" placeholder="Ej. Aporte de caja" required>
 
                             </div>
 
@@ -141,40 +115,18 @@
                             </div>
 
 
-                            {{-- INFORMACIÓN --}}
-                            <div class="alert alert-info py-2 small">
-
-                                ℹ️ La transferencia generará automáticamente:
-
-                                <ul class="mb-0 mt-1">
-
-                                    <li>
-                                        Un <strong>egreso</strong> en
-                                        {{ $caja->nombre }}.
-                                    </li>
-
-                                    <li>
-                                        Un <strong>ingreso</strong> en la
-                                        caja destino.
-                                    </li>
-
-                                </ul>
-
-                            </div>
-
-
                             {{-- BOTONES --}}
                             <div class="d-flex justify-content-between">
 
-                                <a href="{{ route('cajas.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('cajas.movimientos', $caja->id) }}" class="btn btn-secondary">
 
                                     ← Cancelar
 
                                 </a>
 
-                                <button type="submit" class="btn btn-warning">
+                                <button type="submit" class="btn btn-success">
 
-                                    🔄 Realizar transferencia
+                                    💾 Registrar ingreso
 
                                 </button>
 

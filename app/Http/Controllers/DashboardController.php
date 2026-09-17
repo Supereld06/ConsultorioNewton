@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Patient;
 use App\Models\Doctor;
 use App\Models\Consultation;
@@ -15,19 +14,39 @@ class DashboardController extends Controller
     {
         $today = Carbon::today();
 
+        // =====================================================
+        // CONTADORES
+        // =====================================================
+
         $patients = Patient::count();
+
         $doctors = Doctor::count();
 
-        $appointmentsToday = Appointment::whereDate('fecha', $today)->count();
+        $appointmentsToday = Appointment::whereDate('fecha', $today)
+            ->count();
 
         $consultationsToday = Consultation::whereDate('created_at', $today)
             ->where('atendido', true)
             ->count();
 
-        $appointmentsList = Appointment::with('patient', 'doctor', 'consultation')
-            ->whereDate('fecha', $today)
+
+        // =====================================================
+        // TODAS LAS CITAS
+        // 12 POR PÁGINA
+        // =====================================================
+
+        $appointmentsList = Appointment::with([
+            'patient',
+            'doctor',
+            'consultation.curacion',
+            'consultation.estudiosComplementarios',
+            'consultation.pagoMedico',
+        ])
+            ->orderByDesc('fecha')
             ->orderBy('hora')
-            ->get();
+            ->paginate(12)
+            ->withQueryString();
+
 
         return view('dashboard', compact(
             'patients',

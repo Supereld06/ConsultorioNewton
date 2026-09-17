@@ -300,12 +300,6 @@ class EstudioComplementarioController extends Controller
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | EDITAR
-    |--------------------------------------------------------------------------
-    */
-
     public function edit($id)
     {
         $estudio = EstudioComplementario::with([
@@ -314,39 +308,294 @@ class EstudioComplementarioController extends Controller
             'detalles'
         ])->findOrFail($id);
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | CONSULTAS DISPONIBLES
+        |--------------------------------------------------------------------------
+        */
+
+        $consultations = Consultation::with([
+            'appointment.patient',
+            'appointment.doctor'
+        ])
+            ->where('atendido', true)
+            ->orderByDesc('id')
+            ->get();
+
         return view(
             'estudios.edit',
-            compact('estudio')
+            compact(
+                'estudio',
+                'consultations'
+            )
         );
+
+
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | ACTUALIZAR
-    |--------------------------------------------------------------------------
-    */
 
     public function update(Request $request, $id)
     {
         $estudio = EstudioComplementario::findOrFail($id);
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDACIÓN
+        |--------------------------------------------------------------------------
+        */
+
         $request->validate([
-            'fecha' => 'required|date',
-            'observaciones' => 'nullable|string',
+
+            'consultation_id' =>
+                'required|exists:consultations,id',
+
+            'fecha' =>
+                'required|date',
+
+            'nombre_estudio' =>
+                'required|array|min:1',
+
+            'nombre_estudio.*' =>
+                'required|string|max:255',
+
+            'tipo' =>
+                'nullable|array',
+
+            'tipo.*' =>
+                'nullable|string|max:100',
+
+            'laboratorio' =>
+                'nullable|array',
+
+            'laboratorio.*' =>
+                'nullable|string|max:255',
+
+            'precio_laboratorio' =>
+                'required|array',
+
+            'precio_laboratorio.*' =>
+                'required|numeric|min:0',
+
+            'precio_cobrado' =>
+                'required|array',
+
+            'precio_cobrado.*' =>
+                'required|numeric|min:0',
+
+            'monto_pagado_paciente' =>
+                'required|numeric|min:0',
+
+            'monto_pagado_laboratorio' =>
+                'required|numeric|min:0',
+
+            'observaciones' =>
+                'nullable|string',
+
         ]);
 
-        $estudio->update([
-            'fecha' => $request->fecha,
-            'observaciones' => $request->observaciones,
-        ]);
+
+        DB::transaction(function () use ($request, $estudio) {
+
+            /*
+            |--------------------------------------------------------------------------
+            | CONSULTA
+            |--------------------------------------------------------------------------
+            */
+
+            $consulta = Consultation::with([
+                'appointment.doctor'
+            ])->findOrFail(
+                    $request->consultation_id
+                );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | CALCULAR TOTALES
+            |--------------------------------------------------------------------------
+            */
+
+            $totalCobrado = 0;
+
+            $totalLaboratorio = 0;
+
+
+            foreach ($request->nombre_estudio as $i => $nombre) {
+
+                $precioLaboratorio =
+                    (float) $request->precio_laboratorio[$i];
+
+                $precioCobrado =
+                    (float) $request->precio_cobrado[$i];
+
+
+                $totalLaboratorio +=
+                    $precioLaboratorio;
+
+                $totalCobrado +=
+                    $precioCobrado;
+            }
+
+
+            $utilidad =
+                $totalCobrado -
+                $totalLaboratorio;
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | PAGOS
+            |--------------------------------------------------------------------------
+            */
+
+            $montoPagadoPaciente =
+                (float) $request->monto_pagado_paciente;
+
+            $montoPagadoLaboratorio =
+                (float) $request->monto_pagado_laboratorio;
+
+
+            $saldoPaciente =
+                max(
+                    0,
+                    $totalCobrado -
+                    $montoPagadoPaciente
+                );
+
+
+            $saldoLaboratorio =
+                max(
+                    0,
+                    $totalLaboratorio -
+                    $montoPagadoLaboratorio
+                );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | DOCTOR
+            |--------------------------------------------------------------------------
+            */
+
+            $doctorId =
+                $consulta->appointment?->doctor_id;
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | ACTUALIZAR CABECERA
+            |--------------------------------------------------------------------------
+            */
+
+            $estudio->update([
+
+                'consultation_id' =>
+                    $request->consultation_id,
+
+                'doctor_id' =>
+                    $doctorId,
+
+                'fecha' =>
+                    $request->fecha,
+
+                'total_cobrado' =>
+                    $totalCobrado,
+
+                'total_laboratorio' =>
+                    $totalLaboratorio,
+
+                'utilidad' =>
+                    $utilidad,
+
+                'monto_pagado_paciente' =>
+                    $montoPagadoPaciente,
+
+                'saldo_paciente' =>
+                    $saldoPaciente,
+
+                'monto_pagado_laboratorio' =>
+                    $montoPagadoLaboratorio,
+
+                'saldo_laboratorio' =>
+                    $saldoLaboratorio,
+
+                'observaciones' =>
+                    $request->observaciones,
+
+            ]);
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | ELIMINAR DETALLES ANTERIORES
+            |--------------------------------------------------------------------------
+            */
+
+            $estudio->detalles()->delete();
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | CREAR NUEVOS DETALLES
+            |--------------------------------------------------------------------------
+            */
+
+            foreach ($request->nombre_estudio as $i => $nombre) {
+
+                $precioLaboratorio =
+                    (float) $request->precio_laboratorio[$i];
+
+                $precioCobrado =
+                    (float) $request->precio_cobrado[$i];
+
+                $utilidadDetalle =
+                    $precioCobrado -
+                    $precioLaboratorio;
+
+
+                EstudioComplementarioDetalle::create([
+
+                    'estudio_complementario_id' =>
+                        $estudio->id,
+
+                    'nombre_estudio' =>
+                        $nombre,
+
+                    'tipo' =>
+                        $request->tipo[$i] ?? null,
+
+                    'laboratorio' =>
+                        $request->laboratorio[$i] ?? null,
+
+                    'precio_laboratorio' =>
+                        $precioLaboratorio,
+
+                    'precio_cobrado' =>
+                        $precioCobrado,
+
+                    'utilidad' =>
+                        $utilidadDetalle,
+
+                    'observaciones' =>
+                        null,
+
+                ]);
+            }
+
+        });
+
 
         return redirect()
             ->route('estudios.show', $estudio->id)
             ->with(
                 'success',
-                'Estudio actualizado correctamente.'
+                'Estudio complementario actualizado correctamente.'
             );
+
+
     }
 
 
