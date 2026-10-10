@@ -106,7 +106,7 @@
                                         <i class="bi bi-pencil"></i>
                                     </a>
 
-                                    <!-- ELIMINAR -->
+                                    <!-- ELIMINAR 
                                     <form action="{{ route('doctors.destroy', $doctor->id) }}" method="POST"
                                         style="display:inline">
 
@@ -123,7 +123,7 @@
 
                                     <a href="{{ route('doctors.payments', $doctor->id) }}" class="btn btn-success btn-sm" title="Pago Medico">
                                         <i class="bi bi-cash"></i>
-                                    </a>
+                                    </a>-->
 
                                 </td>
 
