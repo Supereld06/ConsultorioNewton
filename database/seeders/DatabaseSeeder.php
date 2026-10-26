@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
            // PatientSeeder::class,
            // DoctorSeeder::class,
            //InsumoSeeder::class,
-           // CajaSeeder::class,
+            CajaSeeder::class,
         ]);
         
     }

@@ -6,17 +6,27 @@
    FONDO GENERAL DEL SISTEMA
 ========================= */
 
-html, body {
-    height: 100%;
+
+html,
+body {
+    min-height: 100%;
     margin: 0;
     padding: 0;
 }
 
-/* Fondo principal */
-body {
-    background: url('/img/fondo.jpg') no-repeat center center fixed !important;
-    background-size: cover !important;
+html {
+    background: transparent !important;
 }
+
+body {
+    min-height: 100vh;
+    background-image: url('/img/fondo.jpg') !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-attachment: fixed !important;
+}
+
 
 /* EVITAR QUE BOOTSTRAP TAPE EL FONDO */
 .container,
@@ -32,13 +42,7 @@ body {
 body::after {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    
-
+    inset: 0;
     pointer-events: none;
     z-index: 0;
 }
